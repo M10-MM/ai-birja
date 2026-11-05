@@ -31,6 +31,22 @@ CANONICAL = {
     "region": "Hudud",
     "seller_broker": "Sotuvchi brokeri",
     "buyer_broker": "Xaridor brokeri",
+    # quyidagilar to'liq reyestrda bor (masalan uzex_spot_data); oddiy fayllarda bo'sh qolishi mumkin
+    "deal_time": "Bitim vaqti, HH:MM:SS (Toshkent)",
+    "trade_type": "Savdo turi: Английский аукцион / Обратный аукцион / Двусторонний аукцион",
+    "contract_form": "Shartnoma shakli: Спот / Форвард / Фьючерс",
+    "status": "Bitim holati: Исполнен, Исполнен(Частично), Оплачен, Ждёт оплату, Заключен, Не подписан, Новый, Аннулирован(Не оплачен)",
+    "product_name": "Reyestrdagi to'liq tovar nomi (marka, sort, tip bilan)",
+    "contract_id": "Shartnoma kartochkasi raqami (contracts jadvali)",
+    "lots": "Sotib olingan lotlar soni",
+    "lot_size": "Bir lotdagi o'lchov birligi soni",
+    "start_price": "Boshlang'ich narx (bir birlik uchun, shartnoma valyutasida)",
+    "amount_uzs": "Bitim summasi so'mda (USD bitimlar bitim sanasidagi kurs bo'yicha)",
+    "seller_inn": "Sotuvchi INN",
+    "buyer_inn": "Xaridor INN",
+    "payment_date": "To'lov sanasi, YYYY-MM-DD (bo'sh — hali to'lanmagan)",
+    "delivery_date": "Yetkazish sanasi, YYYY-MM-DD (bo'sh — hali yetkazilmagan)",
+    "delivered_lots": "Yetkazilgan lotlar soni",
 }
 
 ALIASES: dict[str, list[str]] = {
@@ -57,7 +73,7 @@ ALIASES: dict[str, list[str]] = {
     "buyer_broker": ["buyer_broker", "xaridor brokeri", "брокер покупателя", "buyer broker"],
 }
 
-NUMERIC = {"quantity", "price", "amount"}
+NUMERIC = {"quantity", "price", "amount", "lots", "lot_size", "start_price", "amount_uzs", "delivered_lots"}
 
 
 def _norm(s: str) -> str:

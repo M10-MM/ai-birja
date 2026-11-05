@@ -28,6 +28,33 @@ def ro():
     return _local.ro
 
 
+_cache: dict = {}
+
+
+def cached(key, fn):
+    """Natijani baza fayli o'zgarmaguncha saqlaydi (500 ming bitimda agregatlar 1-2 soniya oladi)."""
+    st = config.DB_PATH.stat()
+    ver = (st.st_mtime_ns, st.st_size)
+    hit = _cache.get(key)
+    if hit and hit[0] == ver:
+        return hit[1]
+    val = fn()
+    if len(_cache) > 1000:
+        _cache.clear()
+    _cache[key] = (ver, val)
+    return val
+
+
+@app.on_event("startup")
+def _warm():  # birinchi tashrifchi kutmasligi uchun asosiy sahifalar fonda hisoblanadi
+    def run():
+        try:
+            ticker(); overview(); facets(); deals(); data_info()
+        except Exception:
+            pass
+    threading.Thread(target=run, daemon=True).start()
+
+
 def users():
     if getattr(_local, "users", None) is None:
         _local.users = auth.connect()
@@ -55,36 +82,41 @@ def index():
 # ---------- ma'lumotlar qamrovi ----------
 @app.get("/api/data")
 def data_info():
-    return db.describe(ro())
+    return cached("data", lambda: db.describe(ro()))
 
 
 # ---------- bozor ----------
 @app.get("/api/market/ticker")
 def ticker():
-    return market.commodity_ticker(ro())
+    return cached("ticker", lambda: market.commodity_ticker(ro()))
 
 
 @app.get("/api/market/overview")
 def overview():
-    return market.overview(ro())
+    return cached("overview", lambda: market.overview(ro()))
 
 
 @app.get("/api/deals")
 def deals(q: str = "", date_from: str = "", date_to: str = "", page: int = 1, size: int = 50,
           sort: str = "deal_date", order: str = "desc", instrument: str = "", category: str = "",
-          region: str = "", market_: str = Query("", alias="market"), seller: str = "", buyer: str = ""):
-    return market.deals(ro(), q, date_from, date_to, page, size, sort, order, instrument=instrument,
-                        category=category, region=region, market=market_, seller=seller, buyer=buyer)
+          region: str = "", market_: str = Query("", alias="market"), seller: str = "", buyer: str = "",
+          status: str = "", contract_form: str = "", trade_type: str = "", seller_broker: str = "",
+          buyer_broker: str = "", contract_id: str = ""):
+    args = dict(instrument=instrument, category=category, region=region, market=market_, seller=seller, buyer=buyer,
+                status=status, contract_form=contract_form, trade_type=trade_type, seller_broker=seller_broker,
+                buyer_broker=buyer_broker, contract_id=contract_id)
+    key = ("deals", q, date_from, date_to, page, size, sort, order, tuple(sorted(args.items())))
+    return cached(key, lambda: market.deals(ro(), q, date_from, date_to, page, size, sort, order, **args))
 
 
 @app.get("/api/deals/facets")
 def facets():
-    return market.deal_facets(ro())
+    return cached("facets", lambda: market.deal_facets(ro()))
 
 
 @app.get("/api/commodity/{code}")
 def commodity(code: str):
-    r = market.commodity(ro(), code)
+    r = cached(("commodity", code), lambda: market.commodity(ro(), code))
     if not r:
         raise HTTPException(404, "not found")
     return r

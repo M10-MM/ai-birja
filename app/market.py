@@ -27,7 +27,7 @@ def load_reference(con: sqlite3.Connection, folder: Path) -> list[dict]:
         f = Path(folder) / fname
         if not f.exists():
             continue
-        df = pd.read_csv(f)
+        df = pd.read_csv(f, dtype={"inn": str})  # INN matn: bo'sh katak floatga aylantirmasin
         df.to_sql(table, con, if_exists="replace", index=False)
         out.append({"file": fname, "table": table, "rows": len(df)})
     if any(o["table"] == "stock_trades" for o in out):
@@ -48,12 +48,17 @@ def _rows(cur) -> list[dict]:
 
 
 # ---------------- Tovar birjasi ----------------
+# Summalar so'mda (USD bitimlar bitim sanasidagi kurs bo'yicha); bekor qilingan (to'lanmagan) bitimlar hisobga kirmaydi.
+AMT = "COALESCE(amount_uzs, amount)"
+OK = "COALESCE(status,'') NOT LIKE 'Аннулирован%'"
+
+
 def _deals_ticker(con) -> list[dict]:
     """Har bir tovar: oxirgi savdo kunidagi o'rtacha tortilgan narx va oldingi kunga nisbatan o'zgarish."""
-    sql = """
+    sql = f"""
     WITH daily AS (
-      SELECT instrument, instrument_name, deal_date, SUM(amount)/SUM(quantity) vwap, SUM(amount) turnover
-      FROM deals WHERE quantity > 0 GROUP BY instrument, deal_date
+      SELECT instrument, instrument_name, deal_date, SUM({AMT})/SUM(quantity) vwap, SUM({AMT}) turnover
+      FROM deals WHERE quantity > 0 AND {OK} GROUP BY instrument, deal_date
     ), ranked AS (
       SELECT *, ROW_NUMBER() OVER (PARTITION BY instrument ORDER BY deal_date DESC) rn FROM daily
     )
@@ -72,20 +77,20 @@ def _deals_ticker(con) -> list[dict]:
 def overview(con) -> dict:
     last = con.execute("SELECT MAX(deal_date) FROM deals").fetchone()[0]
     day = con.execute(
-        "SELECT COUNT(*) n, ROUND(SUM(amount),2) s FROM deals WHERE deal_date=?", (last,)).fetchone()
+        f"SELECT COUNT(*) n, ROUND(SUM({AMT}),2) s FROM deals WHERE deal_date=? AND {OK}", (last,)).fetchone()
     month = con.execute(
-        "SELECT COUNT(*) n, ROUND(SUM(amount),2) s FROM deals WHERE substr(deal_date,1,7)=substr(?,1,7)", (last,)).fetchone()
+        f"SELECT COUNT(*) n, ROUND(SUM({AMT}),2) s FROM deals WHERE substr(deal_date,1,7)=substr(?,1,7) AND {OK}", (last,)).fetchone()
     tot = con.execute("SELECT COUNT(*), MIN(deal_date), MAX(deal_date) FROM deals").fetchone()
     res = {
         "last_date": last, "day_deals": day[0], "day_turnover": day[1],
         "month_deals": month[0], "month_turnover": month[1],
         "total_deals": tot[0], "date_from": tot[1], "date_to": tot[2],
         "categories": _rows(con.execute(
-            "SELECT category, COUNT(*) deals, ROUND(SUM(amount),2) turnover FROM deals "
-            "WHERE substr(deal_date,1,7)=substr(?,1,7) GROUP BY category ORDER BY turnover DESC", (last,))),
+            f"SELECT category, COUNT(*) deals, ROUND(SUM({AMT}),2) turnover FROM deals "
+            f"WHERE substr(deal_date,1,7)=substr(?,1,7) AND {OK} GROUP BY category ORDER BY turnover DESC", (last,))),
         "monthly": _rows(con.execute(
-            "SELECT substr(deal_date,1,7) month, COUNT(*) deals, ROUND(SUM(amount),2) turnover "
-            "FROM deals GROUP BY month ORDER BY month")),
+            f"SELECT substr(deal_date,1,7) month, COUNT(*) deals, ROUND(SUM({AMT}),2) turnover "
+            f"FROM deals WHERE {OK} GROUP BY month ORDER BY month")),
     }
     if _has(con, "usd_rate"):
         r = con.execute("SELECT date, usd_uzs FROM usd_rate ORDER BY date DESC LIMIT 2").fetchall()
@@ -94,15 +99,22 @@ def overview(con) -> dict:
     return res
 
 
-DEAL_FILTERS = {"instrument", "category", "region", "market", "seller", "buyer"}
+DEAL_FILTERS = {"instrument", "category", "region", "market", "seller", "buyer", "status", "contract_form", "trade_type",
+                "seller_broker", "buyer_broker", "seller_inn", "buyer_inn", "contract_id"}
 
 
 def deals(con, q: str = "", date_from: str = "", date_to: str = "", page: int = 1, size: int = 50,
           sort: str = "deal_date", order: str = "desc", **filters) -> dict:
     where, params = ["1=1"], []
     if q:
-        where.append("(LOWER(instrument_name) LIKE ? OR LOWER(deal_id) LIKE ? OR LOWER(buyer) LIKE ? OR LOWER(seller) LIKE ?)")
-        params += [f"%{q.lower()}%"] * 4
+        q = q.strip()
+        if q.isdigit():  # bitim raqami, INN yoki shartnoma raqami — indeks bo'yicha aniq moslik
+            where.append("(deal_id = ? OR seller_inn = ? OR buyer_inn = ? OR contract_id = ?)")
+            params += [q] * 4
+        else:  # `search` — import paytida kichik harfga o'tkazilgan nomlar; bo'sh bo'lsa (oddiy fayl) nomlardan
+            where.append("COALESCE(search, LOWER(COALESCE(instrument_name,'') || ' ' || COALESCE(seller,'') || ' ' "
+                         "|| COALESCE(buyer,''))) LIKE ?")
+            params.append(f"%{q.lower()}%")
     if date_from:
         where.append("deal_date >= ?"); params.append(date_from)
     if date_to:
@@ -111,36 +123,38 @@ def deals(con, q: str = "", date_from: str = "", date_to: str = "", page: int = 
         if k in DEAL_FILTERS and v:
             where.append(f"{k} = ?"); params.append(v)
     w = " AND ".join(where)
-    sort = sort if sort in {"deal_date", "amount", "price", "quantity", "instrument_name"} else "deal_date"
+    sort = sort if sort in {"deal_date", "amount", "amount_uzs", "price", "quantity", "instrument_name", "deal_id"} else "deal_date"
     order = "ASC" if order.lower() == "asc" else "DESC"
-    total, s = con.execute(f"SELECT COUNT(*), ROUND(SUM(amount),2) FROM deals WHERE {w}", params).fetchone()
+    total, s = con.execute(f"SELECT COUNT(*), ROUND(SUM(CASE WHEN {OK} THEN {AMT} END),2) FROM deals WHERE {w}", params).fetchone()
     size = max(1, min(size, 200))
     rows = _rows(con.execute(
-        f"SELECT deal_id, deal_date, market, instrument, instrument_name, category, quantity, unit, price, amount, "
-        f"currency, seller, buyer, region, seller_broker, buyer_broker, source_file, source_row FROM deals WHERE {w} "
-        f"ORDER BY {sort} {order}, deal_id {order} LIMIT ? OFFSET ?", params + [size, (max(page, 1) - 1) * size]))
+        f"SELECT deal_id, deal_date, deal_time, market, trade_type, contract_form, status, instrument, instrument_name, "
+        f"product_name, category, contract_id, quantity, unit, price, amount, currency, amount_uzs, seller, buyer, "
+        f"seller_inn, buyer_inn, region, seller_broker, buyer_broker, payment_date, delivery_date, source_file, source_row "
+        f"FROM deals WHERE {w} ORDER BY {sort} {order}, deal_time {order}, deal_id {order} LIMIT ? OFFSET ?", params + [size, (max(page, 1) - 1) * size]))
     return {"total": total, "sum_amount": s, "page": page, "size": size, "rows": rows}
 
 
 def deal_facets(con) -> dict:
     f = lambda c: [r[0] for r in con.execute(f"SELECT DISTINCT {c} FROM deals WHERE {c} IS NOT NULL ORDER BY 1")]
-    return {"category": f("category"), "region": f("region"), "market": f("market"),
+    return {"category": f("category"), "region": f("region"), "market": f("market"), "status": f("status"),
+            "contract_form": f("contract_form"), "trade_type": f("trade_type"),
             "instrument": _rows(con.execute("SELECT DISTINCT instrument code, instrument_name name FROM deals ORDER BY name"))}
 
 
 def _deals_commodity(con, code: str) -> dict:
     info = con.execute(
-        "SELECT instrument, instrument_name, category, unit, COUNT(*), ROUND(SUM(amount),2), SUM(quantity), "
-        "MIN(deal_date), MAX(deal_date) FROM deals WHERE instrument=?", (code,)).fetchone()
+        f"SELECT instrument, instrument_name, category, unit, COUNT(*), ROUND(SUM({AMT}),2), SUM(quantity), "
+        f"MIN(deal_date), MAX(deal_date) FROM deals WHERE instrument=? AND {OK}", (code,)).fetchone()
     if not info or not info[0]:
         return {}
     series = _rows(con.execute(
-        "SELECT substr(deal_date,1,7) month, ROUND(SUM(amount)/SUM(quantity),2) vwap, ROUND(MIN(price),2) low, "
-        "ROUND(MAX(price),2) high, SUM(quantity) qty, ROUND(SUM(amount),2) turnover, COUNT(*) deals "
-        "FROM deals WHERE instrument=? GROUP BY month ORDER BY month", (code,)))
+        f"SELECT substr(deal_date,1,7) month, ROUND(SUM({AMT})/SUM(quantity),2) vwap, ROUND(MIN({AMT}/quantity),2) low, "
+        f"ROUND(MAX({AMT}/quantity),2) high, SUM(quantity) qty, ROUND(SUM({AMT}),2) turnover, COUNT(*) deals "
+        f"FROM deals WHERE instrument=? AND quantity > 0 AND {OK} GROUP BY month ORDER BY month", (code,)))
     top_buyers = _rows(con.execute(
-        "SELECT buyer, COUNT(*) deals, ROUND(SUM(amount),2) turnover FROM deals WHERE instrument=? "
-        "GROUP BY buyer ORDER BY turnover DESC LIMIT 10", (code,)))
+        f"SELECT buyer, COUNT(*) deals, ROUND(SUM({AMT}),2) turnover FROM deals WHERE instrument=? AND {OK} "
+        f"GROUP BY buyer ORDER BY turnover DESC LIMIT 10", (code,)))
     return {"code": info[0], "name": info[1], "category": info[2], "unit": info[3], "deals": info[4],
             "turnover": info[5], "quantity": info[6], "date_from": info[7], "date_to": info[8],
             "series": series, "top_buyers": top_buyers}
@@ -252,8 +266,13 @@ def _slug(name: str) -> str:
     return "Q-" + _re.sub(r"[^a-z0-9]+", "-", norm(name)).strip("-")[:48]
 
 
+def _registry(con) -> bool:
+    """To'liq (DEMO bo'lmagan) bitimlar reyestri yuklanganmi."""
+    return con.execute("SELECT 1 FROM deals WHERE exchange NOT LIKE '%DEMO%' AND status IS NOT NULL LIMIT 1").fetchone() is not None
+
+
 def commodity_ticker(con) -> list[dict]:
-    if not _has(con, "uzex_quotes"):
+    if not _has(con, "uzex_quotes") or _registry(con):
         return _deals_ticker(con)
     out = _rows(con.execute(
         "SELECT name, category, quote_date date, price, change_abs change, change_pct, currency, source "

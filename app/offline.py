@@ -25,20 +25,40 @@ def norm(s: str) -> str:
     return re.sub(r"\s+", " ", s).strip()
 
 
-# ru/en so'z o'zagi -> bazadagi (o'zbekcha) nom o'zagi
+# uz/en so'z o'zagi -> bazadagi tovar nomi (ruscha, lotinga o'girilgan: norm("Мука") == "muka").
+# Ruscha savollar nomga to'g'ridan-to'g'ri mos keladi.
+# Har bir almashtirish ruscha va o'zbekcha nomni birga beradi — reyestr ruscha, yuklangan fayllar o'zbekcha bo'lishi mumkin.
 ALIASES = [
-    (r"\bmed[yi]|\bmedn|copper|katod", "mis katodi"), (r"tsement|cement|portlandsement", "sement portlandsement"),
-    (r"pshenits|wheat|bugdoy", "bugdoy"), (r"zolot|\bgold|oltin", "oltin"), (r"\bseri\b|sulfur|oltingugurt", "oltingugurt"),
-    (r"benzin|gasoline|petrol", "benzin avtobenzin"), (r"xlop|cotton|paxta", "paxta"), (r"saxar|sugar", "shakar"),
-    (r"szhizh|lpg|propan|liquefied", "suyultirilgan gaz"), (r"\bug(ol|l)|coal|komir", "toshkomir"),
-    (r"podsolnech|maslo|masla|sunflower|kungaboqar", "kungaboqar"), 
-    (r"dizel|diesel|\bdt\b", "dizel"), (r"armatur|rebar", "armatura"), (r"polipropilen|polypropylene", "polipropilen"),
-    (r"polietilen|polyethylene", "polietilen"), (r"evro|euro", "evro"),
+    (r"paxta tolasi|kalava|\byarn\b", "pryaja"),
+    (r"chigit yog|cottonseed oil|paxta yog|cotton oil", "maslo xlopkovoe paxta yogi"),
+    (r"kungaboqar|sunflower|podsolnech", "maslo podsolnechnoe kungaboqar"),
+    (r"\bpaxta|\bcotton|\bxlopok\b|\bxlopk(a|u|om|e)\b", "xlopok paxta"),
+    (r"bugdoy|\bwheat|pshenits", "pshenitsa bugdoy"), (r"\bun\b|\bflour", "muka un"), (r"guruch|\brice\b", "ris guruch"),
+    (r"shakar|\bsugar|\bsaxar", "saxar shakar"),
+    (r"\bsement|\bcement|\btsement|portlandt?sement", "portlandtsement portlandsement sement"),
+    (r"gasoline|petrol|avtobenzin|\bbenzin", "benzin avtobenzin"), (r"\bdizel|diesel|\bdt\b", "dizelnoe toplivo dizel"),
+    (r"fuel oil", "mazut"), (r"\bmis\b|copper|\bkatod|\bmedn|\bmedi?\b", "medniy katod mis katodi"),
+    (r"zolot|\bgold\b|\boltin\b", "oltin zoloto"), (r"\bug(ol|l)|\bcoal|komir", "toshkomir"),
+    (r"rebar", "armatura"), (r"suyultirilgan gaz|\blpg\b|propan|liquefied gas|sjijenn", "gaz sjijenniy suyultirilgan gaz"),
+    (r"polyethylene", "polietilen"),
+    (r"polypropylene", "polipropilen"), (r"\burea\b|mochevin", "karbamid"), (r"ammonium nitrate", "ammiachnaya selitra"),
+    (r"gisht|\bbrick", "kirpich"), (r"shisha|\bglass", "steklo"), (r"\btuz\b|\bsalt\b", "sol"),
+    (r"yogoch|taxta|lumber|timber", "pilomateriali"), (r"alyumin|\balumin", "profil alyuminieviy"),
+    (r"\bpvx\b|\bpvc\b", "polivinilxlorid"), (r"bearing", "podshipnik"), (r"\bcable", "kabel"),
+    (r"\bohak|\blime\b", "izvest"), (r"gypsum", "gips"), (r"sulfuric", "kislota sernaya"),
+    (r"enamel", "emal"), (r"ichimlik suv|drinking water", "voda pitevaya"), (r"omuxta yem|\bfeed\b", "kombikorm"),
 ]
+
+
+def _stem(word: str) -> str:
+    """So'z o'zagi: oxirgi unlilar olib tashlanadi, 5 harfgacha (муке/мука -> muk, медного/медный -> medn)."""
+    w = word.rstrip("aeiouy") or word
+    return w[:5]
+
+
 # Bazada bo'lmasligi mumkin bo'lgan tovarlar — so'ralsa "ma'lumot yo'q" deyiladi
 FOREIGN = [(r"zolot|\bgold|oltin", {"ru": "золото", "uz": "oltin", "en": "gold"}),
            (r"serebr|silver|kumush", {"ru": "серебро", "uz": "kumush", "en": "silver"}),
-           (r"\bris\b|\brisa\b|\brice\b|guruch", {"ru": "рис", "uz": "guruch", "en": "rice"}),
            (r"myas|\bmeat|gosht", {"ru": "мясо", "uz": "go'sht", "en": "meat"}),
            (r"neft[\s-]*(syr|xom)|crude", {"ru": "сырая нефть", "uz": "xom neft", "en": "crude oil"}),
            (r"alyumin|alumin", {"ru": "алюминий", "uz": "alyuminiy", "en": "aluminium"})]
@@ -98,7 +118,7 @@ T = {
                  "category": "товарных групп", "seller_broker": "брокеров продавца", "buyer_broker": "брокеров покупателя",
                  "broker": "брокеров"},
         "in": " в {x}", "for_year": " за {y} год", "for_month": " за {m} {y}", "for_range": " за {a} — {b}",
-        "for_prod": " по товару «{x}»", "src": "Источник: таблица {t}, файл(ы): {f}. SQL-запросы показаны ниже.",
+        "for_prod": " по товару «{x}»", "src": "Источник: таблица {t}, файл(ы): {f}. Суммы в UZS (USD-сделки — по курсу на дату сделки), аннулированные (неоплаченные) сделки не учитываются. SQL-запросы показаны ниже.",
     },
     "uz": {
         "stock_q": "{t} aksiyalari — {issuer}, {d} kotirovkasi: yopilish narxi {c} {cur}, oxirgi bitim narxi {l} {cur}, o'zgarish {ch} {cur} (bazaviy narx {prev} ga nisbatan {pct}%).",
@@ -124,7 +144,7 @@ T = {
                  "category": "tovar guruhi", "seller_broker": "sotuvchi brokeri", "buyer_broker": "xaridor brokeri",
                  "broker": "broker"},
         "in": " {x} da", "for_year": " {y}-yilda", "for_month": " {y}-yil {m} oyida", "for_range": " {a} — {b} davrida",
-        "for_prod": " «{x}» bo'yicha", "src": "Manba: {t} jadvali, fayl(lar): {f}. SQL so'rovlar quyida.",
+        "for_prod": " «{x}» bo'yicha", "src": "Manba: {t} jadvali, fayl(lar): {f}. Summalar so'mda (USD bitimlar — bitim sanasidagi kurs bo'yicha), bekor qilingan (to'lanmagan) bitimlar hisobga olinmagan. SQL so'rovlar quyida.",
     },
     "en": {
         "stock_q": "{t} shares — {issuer}, quote on {d}: close {c} {cur}, last trade {l} {cur}, change {ch} {cur} ({pct}% vs base price {prev}).",
@@ -150,9 +170,13 @@ T = {
                  "category": "commodity groups", "seller_broker": "seller-side brokers", "buyer_broker": "buyer-side brokers",
                  "broker": "brokers"},
         "in": " in {x}", "for_year": " in {y}", "for_month": " in {m} {y}", "for_range": " for {a} — {b}",
-        "for_prod": " for \"{x}\"", "src": "Source: table {t}, file(s): {f}. SQL queries are shown below.",
+        "for_prod": " for \"{x}\"", "src": "Source: table {t}, file(s): {f}. Amounts in UZS (USD deals converted at the rate on the deal date); cancelled (unpaid) deals are excluded. SQL queries are shown below.",
     },
 }
+
+
+AMT = "COALESCE(amount_uzs, amount)"  # so'mda (USD bitimlar bitim sanasidagi kurs bo'yicha)
+OK = "COALESCE(status,'') NOT LIKE 'Аннулирован%'"  # bekor qilingan (to'lanmagan) bitimlar hisobga olinmaydi
 
 
 class OfflineAgent:
@@ -172,6 +196,9 @@ class OfflineAgent:
         self.evidence.append(res)
         return res["rows"]
 
+    def cols(self, table: str) -> list[str]:
+        return [r[1] for r in self.con.execute(f"PRAGMA table_info({table})")]
+
     def has(self, table: str) -> bool:
         return bool(self.con.execute("SELECT 1 FROM sqlite_master WHERE name=?", (table,)).fetchone())
 
@@ -185,7 +212,7 @@ class OfflineAgent:
         scored = []
         for name in names:
             toks = re.findall(r"[a-z0-9.,%]+", norm(name).replace("-", ""))
-            if not toks or not any(t.startswith(toks[0][:5]) for t in qtoks):
+            if not toks or not any(t.startswith(_stem(toks[0])) for t in qtoks):
                 continue
             score = sum(1 for nt in toks[1:] if any(
                 (qt == nt) if re.match(r"[\d.,%]+$", nt) or len(nt) <= 3 else qt.startswith(nt[:4]) for qt in qtoks))
@@ -262,7 +289,7 @@ class OfflineAgent:
         return AgentResult(answer, check["ok"], check["unsupported"], self.queries, self.evidence)
 
     def _where(self, prods, d1, d2):
-        w, p = ["1=1"], []
+        w, p = [OK], []
         if prods:
             w.append("instrument_name IN (" + ",".join("?" * len(prods)) + ")"); p += prods
         if d1:
@@ -288,8 +315,10 @@ class OfflineAgent:
                 return self._stock_quote(tk, lang, t)
             return self._stock(tk, nq, lang, t)
 
-        # 1b) tovar kotirovkasi (uzex_quotes) — davr ko'rsatilmagan narx savollari
-        if self.has("uzex_quotes") and quote_q and not has_period and not volume_q:
+        # 1b) tovar kotirovkasi (uzex_quotes) — davr ko'rsatilmagan narx savollari.
+        # To'liq bitimlar reyestri yuklangan bo'lsa, narxlar sayt bilan bir xil bo'lishi uchun reyestrdan olinadi.
+        registry = self.con.execute("SELECT 1 FROM deals WHERE exchange NOT LIKE '%DEMO%' AND status IS NOT NULL LIMIT 1").fetchone()
+        if self.has("uzex_quotes") and not registry and quote_q and not has_period and not volume_q:
             names = [r[0] for r in self.con.execute("SELECT name FROM uzex_quotes")]
             hit = self.products(nq, names)
             if hit:
@@ -322,7 +351,7 @@ class OfflineAgent:
         # 3) dollarda
         if re.search(r"\busd\b|dollar|долл", nq) and self.has("usd_rate"):
             r = self.sql(
-                "SELECT COUNT(*), ROUND(SUM(amount),2), ROUND(SUM(amount / (SELECT usd_uzs FROM usd_rate u "
+                f"SELECT COUNT(*), ROUND(SUM({AMT}),2), ROUND(SUM({AMT} / (SELECT usd_uzs FROM usd_rate u "
                 f"WHERE u.date <= d.deal_date ORDER BY u.date DESC LIMIT 1)),2) FROM deals d WHERE {w}", p)[0]
             if not r[0]:
                 return [t["nodata"]]
@@ -331,7 +360,7 @@ class OfflineAgent:
         # 4) o'rtacha narx oylar bo'yicha
         if re.search(r"sredn|average|avg|ortacha|narx|tsen|price", nq) and prods:
             rows = self.sql(
-                f"SELECT substr(deal_date,1,7) m, ROUND(SUM(amount)/SUM(quantity),2) vwap, COUNT(*) n, MAX(currency) "
+                f"SELECT substr(deal_date,1,7) m, ROUND(SUM({AMT})/SUM(quantity),2) vwap, COUNT(*) n, 'UZS' "
                 f"FROM deals WHERE {w} AND quantity > 0 GROUP BY m ORDER BY m", p)
             if not rows:
                 return [t["nodata"]]
@@ -344,12 +373,14 @@ class OfflineAgent:
             dim = dim or "instrument_name"
             order = "n DESC, s DESC" if by_count else "s DESC"
             if dim == "broker":
+                bname = ("COALESCE((SELECT b.name || ' (' || x.code || ')' FROM brokers b WHERE b.code = x.code), x.code)"
+                         if self.has("brokers") and "code" in self.cols("brokers") else "x.code")
                 rows = self.sql(
-                    f"SELECT name, COUNT(*) n, ROUND(SUM(amount),2) s FROM (SELECT seller_broker name, amount FROM deals WHERE {w} "
-                    f"UNION ALL SELECT buyer_broker, amount FROM deals WHERE {w}) WHERE name IS NOT NULL GROUP BY name ORDER BY {order} LIMIT ?",
+                    f"SELECT {bname}, COUNT(*) n, ROUND(SUM(a),2) s FROM (SELECT seller_broker code, {AMT} a FROM deals WHERE {w} "
+                    f"UNION ALL SELECT buyer_broker, {AMT} FROM deals WHERE {w}) x WHERE x.code IS NOT NULL GROUP BY x.code ORDER BY {order} LIMIT ?",
                     p + p + (k,))
             else:
-                rows = self.sql(f"SELECT {dim}, COUNT(*) n, ROUND(SUM(amount),2) s FROM deals WHERE {w} AND {dim} IS NOT NULL "
+                rows = self.sql(f"SELECT {dim}, COUNT(*) n, ROUND(SUM({AMT}),2) s FROM deals WHERE {w} AND {dim} IS NOT NULL "
                                 f"GROUP BY {dim} ORDER BY {order} LIMIT ?", p + (k,))
             if not rows:
                 return [t["nodata"]]
@@ -360,8 +391,8 @@ class OfflineAgent:
 
         # 6) soni va summa
         if prods or d1:
-            r = self.sql(f"SELECT COUNT(*), ROUND(SUM(amount),2), SUM(quantity), ROUND(SUM(amount)/SUM(quantity),2), "
-                         f"MAX(unit), MAX(currency) FROM deals WHERE {w}", p)[0]
+            r = self.sql(f"SELECT COUNT(*), ROUND(SUM({AMT}),2), SUM(quantity), ROUND(SUM({AMT})/SUM(quantity),2), "
+                         f"MAX(unit), 'UZS' FROM deals WHERE {w}", p)[0]
             if not r[0]:
                 return [t["nodata"]]
             if prods:

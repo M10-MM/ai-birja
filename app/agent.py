@@ -12,7 +12,7 @@ SYSTEM_PROMPT = """Sen birja bitimlari bo'yicha tahlilchi AI-agentsan.
 
 QAT'IY QOIDALAR:
 1. Faqat vositalar (tools) orqali bazadagi jadvallardan (`deals` — tovar birjasi bitimlari; agar mavjud bo'lsa
-   `stock_trades`, `listings`, `participants`, `brokers`, `usd_rate`) olingan ma'lumotlarga tayan. O'z bilimingdan,
+   `stock_trades`, `listings`, `participants`, `brokers`, `contracts`, `usd_rate`) olingan ma'lumotlarga tayan. O'z bilimingdan,
    taxmindan yoki internetdan hech qanday fakt, son, narx, kompaniya nomini qo'shma.
 2. Har qanday hisob-kitobni (yig'indi, o'rtacha, foiz, o'sish, tartiblash) SQL orqali bajar —
    boshingda hisoblama. Javobdagi har bir son SQL natijasida aynan bo'lishi kerak.
@@ -21,7 +21,12 @@ QAT'IY QOIDALAR:
 4. Agar ma'lumotlarda javob yo'q bo'lsa (davr qamrovdan tashqarida, tovar topilmadi va h.k.),
    aniq ayt: "Mavjud ma'lumotlarda bu savolga javob yo'q" va nimasi yetishmayotganini tushuntir.
    Hech qachon taxminiy javob berma, prognoz qilma, investitsiya maslahati berma.
-5. Valyutalarni aralashtirma: har xil valyutadagi summalarni qo'shma, alohida ko'rsat.
+5. Valyutalarni aralashtirma. `amount` — shartnoma valyutasida (UZS yoki USD), `amount_uzs` — hammasi so'mda
+   (USD bitimlar bitim sanasidagi kurs bo'yicha). Aylanma/summa uchun `amount_uzs` ni ishlat.
+5a. Bitim holati `status`: 'Аннулирован(Не оплачен)' — bitim amalga oshmagan. Aylanma, hajm va narx hisoblarida
+   ularni chiqarib tashla (status NOT LIKE 'Аннулирован%') va buni javobda ayt. Hajm `quantity` — o'lchov
+   birligida (lotlar × lot hajmi), narx `price` — bir birlik uchun. Tovar nomi: `instrument_name` (yagona nom),
+   `product_name` — reyestrdagi asl to'liq nom. Sotuvchi/xaridor: nom (`seller`, `buyer`) va INN (`seller_inn`, `buyer_inn`).
 6. Javob oxirida "Manba:" bo'limida ishlatilgan fayl(lar) nomini va davrni yoz; zarur bo'lsa
    bitim raqamlarini (deal_id) keltir.
 7. Dollarga o'tkazish kerak bo'lsa `usd_rate` jadvalidagi o'sha sananing kursini SQL ichida ishlat.
@@ -54,7 +59,9 @@ TOOLS = [
             "Bazaga bitta SQLite SELECT so'rovini bajaradi (faqat o'qish). "
             "`deals` ustunlari: deal_id, deal_date (YYYY-MM-DD matn), exchange, market, instrument, instrument_name, "
             "category, quantity, unit, price, amount, currency, seller, buyer, region, seller_broker, buyer_broker, "
-            "source_file, source_row. Boshqa jadvallar ustunlari describe_data -> other_tables da. "
+            "deal_time, trade_type, contract_form, status, product_name, contract_id, lots, lot_size, start_price, "
+            "amount_uzs, seller_inn, buyer_inn, payment_date, delivery_date, delivered_lots, source_file, source_row. "
+            "Matn qidiruvida LOWER() kirill harflari bilan ham ishlaydi. Boshqa jadvallar ustunlari describe_data -> other_tables da. "
             f"Natija ko'pi bilan {config.MAX_ROWS} qator. Agregatlar uchun SUM/AVG/COUNT/ROUND dan foydalan."
         ),
         "input_schema": {

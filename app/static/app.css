@@ -349,3 +349,7 @@ a.ftr-row:hover span, a.ftr-row:hover { color: #9fc0ff; }
   .util-src { display: none; }
   .util-in { justify-content: space-between; }
 }
+
+.st { display: inline-block; font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--chip, #eef2f7); white-space: nowrap; }
+.st.ok { background: #e6f6ec; color: #13703a; }
+.st.bad { background: #fdecec; color: #a32020; }

@@ -14,8 +14,8 @@ const I18N = {
     "role.investor": "Инвестор", "role.broker": "Брокер", "role.participant": "Участник торгов",
     "footer.text": "Прототип: сайт биржевых данных и AI-агент, который отвечает только на основе загруженных данных и проверяет каждое число.",
     "cov": "Данные: {n} сделок · {from} — {to}",
-    "demo": "Котировки акций (UZSE) и товаров (UZEX), сделки с акциями, листинг и ликвидность — данные из файла «Данные торгов биржи UZEX.pdf» и с сайта биржи на 05.11.2026. Реестр товарных сделок, участники, брокеры и курс USD — пока ДЕМО (синтетические): загрузите папку данных конкурса — python cli.py load <файл> --exchange UZEX",
-    "util.issuer": "Эмитент", "util.trade": "Перейти к торговле", "util.src": "Котировки на 05.11.2026",
+    "demo": "Котировки акций (UZSE) и товаров (UZEX), сделки с акциями, листинг, ликвидность и реестр брокеров — данные из файла «Данные торгов биржи UZEX.pdf» и с сайта биржи на 05.11.2026. Реестр товарных сделок, участники и курс USD — пока ДЕМО (синтетические): загрузите папку данных конкурса — python cli.py load <файл> --exchange UZEX",
+    "util.issuer": "Эмитент", "util.trade": "Перейти к торговле", "util.src": "Котировки на {d}",
     "gov.title": "Государственные учреждения", "th.close": "Цена закрытия", "dt.daytrades": "Сделки за день",
     "dt.source": "Источник", "dt.qdate": "Дата котировки", "dt.ntrades": "Сделок за день", "dt.quote": "Котировка UZEX",
     "dt.noreg": "В реестре сделок нет сделок по этому товару.", "dt.reg": "Сделки в реестре ({n})",
@@ -39,15 +39,17 @@ const I18N = {
     "th.last": "Последняя цена", "th.chg": "Изменение", "th.dayvol": "Объём за день", "th.vol30": "Объём 30 дн.",
     "th.cap": "Капитализация", "th.liq": "Ликвидность", "th.deal": "№ сделки", "th.date": "Дата", "th.product": "Товар",
     "th.category": "Группа", "th.amount": "Сумма", "th.seller": "Продавец", "th.buyer": "Покупатель", "th.region": "Регион",
-    "th.section": "Секция", "th.source": "Источник", "th.deals": "Сделок", "th.turnover": "Оборот", "th.month": "Месяц",
+    "th.section": "Тип / форма", "th.status": "Состояние", "f.status": "Состояние", "f.form": "Форма контракта", "f.market": "Тип контракта",
+    "ds": "Реестр сделок — набор данных конкурса «uzex_spot_data» (данные вымышленные, формат реестра товарно-сырьевой биржи): {n} сделок за {a} — {b}. Обороты — в UZS (USD-сделки по курсу на дату сделки), аннулированные (неоплаченные) сделки в обороты не входят.",
+    "th.source": "Источник", "th.deals": "Сделок", "th.turnover": "Оборот", "th.month": "Месяц",
     "th.vwap": "Средневзв. цена", "th.low": "Мин.", "th.high": "Макс.", "th.name": "Наименование", "th.role": "Роль",
     "th.inn": "ИНН", "th.license": "Лицензия", "th.unit": "Ед.", "th.brokers": "Брокеры (прод./пок.)",
     "type.common": "Простые акции", "type.pref": "Прив. акции",
     "stocks.title": "Акции", "stocks.text": "Все ценные бумаги котировального листа: цены, изменение, объёмы и ликвидность за 12 месяцев.",
     "stocks.search": "Поиск по тикеру или эмитенту", "all": "Все",
     "com.title": "Товарная биржа", "com.text": "Котировки биржевых товаров: средневзвешенная цена последнего торгового дня и изменение к предыдущему.",
-    "deals.title": "Реестр биржевых сделок", "deals.text": "Каждая сделка — с номером, источником и строкой файла.",
-    "f.search": "Поиск: товар, № сделки, участник", "f.from": "С даты", "f.to": "По дату", "f.category": "Группа", "f.region": "Регион",
+    "deals.title": "Реестр биржевых сделок", "deals.text": "Каждая сделка — с номером, состоянием, участниками, брокерами, источником и строкой файла.",
+    "f.search": "Поиск: товар, участник, № сделки или ИНН", "f.from": "С даты", "f.to": "По дату", "f.category": "Группа", "f.region": "Регион",
     "f.product": "Товар", "f.reset": "Сбросить", "f.csv": "Скачать CSV",
     "pager": "Найдено {n} сделок · сумма {s}", "prev": "← Назад", "next": "Вперёд →", "page": "Стр. {p} из {t}",
     "dt.issuer": "Эмитент", "dt.isin": "ISIN", "dt.type": "Тип", "dt.nominal": "Номинал", "dt.shares": "Кол-во акций",
@@ -91,8 +93,8 @@ const I18N = {
     "role.investor": "Investor", "role.broker": "Broker", "role.participant": "Trading participant",
     "footer.text": "Prototype: an exchange data website and an AI agent that answers only from the loaded data and checks every number.",
     "cov": "Data: {n} deals · {from} — {to}",
-    "demo": "Share (UZSE) and commodity (UZEX) quotes, share trades, listing and liquidity come from the file \"Данные торгов биржи UZEX.pdf\" and the exchange site as of 05.11.2026. The commodity deal registry, participants, brokers and USD rate are still DEMO (synthetic): load the contest data folder — python cli.py load <file> --exchange UZEX",
-    "util.issuer": "Issuer", "util.trade": "Go to trading", "util.src": "Quotes as of 05.11.2026",
+    "demo": "Share (UZSE) and commodity (UZEX) quotes, share trades, listing, liquidity and the broker registry come from the file \"Данные торгов биржи UZEX.pdf\" and the exchange site as of 05.11.2026. The commodity deal registry, participants and USD rate are still DEMO (synthetic): load the contest data folder — python cli.py load <file> --exchange UZEX",
+    "util.issuer": "Issuer", "util.trade": "Go to trading", "util.src": "Quotes as of {d}",
     "gov.title": "Government institutions", "th.close": "Close price", "dt.daytrades": "Trades during the day",
     "dt.source": "Source", "dt.qdate": "Quote date", "dt.ntrades": "Trades today", "dt.quote": "UZEX quote",
     "dt.noreg": "The deal registry has no deals for this commodity.", "dt.reg": "Registry deals ({n})",
@@ -116,15 +118,17 @@ const I18N = {
     "th.last": "Last price", "th.chg": "Change", "th.dayvol": "Day volume", "th.vol30": "30-day volume",
     "th.cap": "Market cap", "th.liq": "Liquidity", "th.deal": "Deal #", "th.date": "Date", "th.product": "Commodity",
     "th.category": "Group", "th.amount": "Amount", "th.seller": "Seller", "th.buyer": "Buyer", "th.region": "Region",
-    "th.section": "Section", "th.source": "Source", "th.deals": "Deals", "th.turnover": "Turnover", "th.month": "Month",
+    "th.section": "Type / form", "th.status": "Status", "f.status": "Status", "f.form": "Contract form", "f.market": "Contract type",
+    "ds": "The deal registry is the contest dataset \"uzex_spot_data\" (fictional data in the commodity exchange registry format): {n} deals, {a} — {b}. Turnover is in UZS (USD deals at the rate on the deal date); cancelled (unpaid) deals are not counted in turnover.",
+    "th.source": "Source", "th.deals": "Deals", "th.turnover": "Turnover", "th.month": "Month",
     "th.vwap": "VWAP", "th.low": "Low", "th.high": "High", "th.name": "Name", "th.role": "Role",
     "th.inn": "TIN", "th.license": "License", "th.unit": "Unit", "th.brokers": "Brokers (sell/buy)",
     "type.common": "Common shares", "type.pref": "Preferred shares",
     "stocks.title": "Stocks", "stocks.text": "All securities on the quotation list: prices, change, volumes and 12-month liquidity.",
     "stocks.search": "Search by ticker or issuer", "all": "All",
     "com.title": "Commodity exchange", "com.text": "Commodity quotes: volume-weighted price on the last trading day and change vs. the previous one.",
-    "deals.title": "Exchange deal registry", "deals.text": "Every deal with its number, source file and row.",
-    "f.search": "Search: commodity, deal #, party", "f.from": "From", "f.to": "To", "f.category": "Group", "f.region": "Region",
+    "deals.title": "Exchange deal registry", "deals.text": "Every deal with its number, status, parties, brokers, source file and row.",
+    "f.search": "Search: commodity, party, deal # or TIN", "f.from": "From", "f.to": "To", "f.category": "Group", "f.region": "Region",
     "f.product": "Commodity", "f.reset": "Reset", "f.csv": "Download CSV",
     "pager": "{n} deals found · total {s}", "prev": "← Prev", "next": "Next →", "page": "Page {p} of {t}",
     "dt.issuer": "Issuer", "dt.isin": "ISIN", "dt.type": "Type", "dt.nominal": "Nominal", "dt.shares": "Shares outstanding",
@@ -263,6 +267,9 @@ async function renderTape() {
       <span class="tk-chg num ${cls(x.change)}">${sign(x.change)}${fmt(x.change, 2)}(${fmt(Math.abs(x.change_pct), 2)}%)</span>
     </a>`).join("");
   $("#tapeTrack").innerHTML = items + items;
+  const d = TAPE.map(x => x.date).filter(Boolean).sort().pop();
+  const src = document.querySelector(".util-src");
+  if (src) src.textContent = d ? t("util.src", { d: dmy(d) }) : "";
 }
 
 function openPop() { $("#loginPop").hidden = false; $("#popLogin [name=role]").focus(); }
@@ -324,10 +331,13 @@ async function footer() {
     <div class="ftr-bottom"><span>© 2026 AI Birja</span><span>${esc(cov)}</span><a href="#/about">${t("nav.about")}</a></div>
   </div>`;
 }
-async function demoNote() {
+async function demoNote(registry = false) {
   try {
     const d = await cached("data", () => api("/api/data"));
-    return Object.keys(d.exchanges).some(x => /DEMO/i.test(x)) ? `<div class="demo-note">⚠ ${t("demo")}</div>` : "";
+    if (Object.keys(d.exchanges).some(x => /DEMO/i.test(x))) return `<div class="demo-note">⚠ ${t("demo")}</div>`;
+    if (registry && d.sources.some(s => /uzex_spot_data/.test(s.url || "")))
+      return `<div class="demo-note">ℹ ${t("ds", { n: fmt(d.total_rows), a: dmy(d.date_range[0]), b: dmy(d.date_range[1]) })}</div>`;
+    return "";
   } catch { return ""; }
 }
 
@@ -545,7 +555,7 @@ async function pageStock(tk) {
 // commodities
 async function pageCommodities() {
   const rows = await cached("ticker", () => api("/api/market/ticker"));
-  return `<div class="page-h"><h1>${t("com.title")}</h1><p>${t("com.text")}</p></div>${await demoNote()}
+  return `<div class="page-h"><h1>${t("com.title")}</h1><p>${t("com.text")}</p></div>${await demoNote(true)}
   <div class="card tbl-wrap"><table><thead><tr><th></th><th>${t("th.product")}</th><th>${t("th.date")}</th><th class="r">${t("th.vwap")}</th><th class="r">${t("th.chg")}</th><th class="r">${t("th.turnover")}</th></tr></thead><tbody>
   ${rows.map(x => `<tr class="clk" data-href="#/commodity/${encodeURIComponent(x.code)}"><td>${starBtn("commodity", x.code)}</td>
     <td class="t-code"><b>${esc(x.name)}</b><small>${esc(x.category || x.code)}</small></td><td class="num">${dmy(x.date)}</td>
@@ -606,7 +616,7 @@ async function pageCommodity(code) {
 async function pageDeals(params) {
   const fc = await cached("facets", () => api("/api/deals/facets"));
   const opt = (arr, v) => `<option value="">${t("all")}</option>` + arr.map(x => typeof x === "string" ? `<option ${x === v ? "selected" : ""}>${esc(x)}</option>` : `<option value="${esc(x.code)}" ${x.code === v ? "selected" : ""}>${esc(x.name)}</option>`).join("");
-  return `<div class="page-h"><h1>${t("deals.title")}</h1><p>${t("deals.text")}</p></div>${await demoNote()}
+  return `<div class="page-h"><h1>${t("deals.title")}</h1><p>${t("deals.text")}</p></div>${await demoNote(true)}
   <div class="card">
     <form class="filters" id="dlF">
       <label>${t("f.search")}<input type="search" name="q" value="${esc(params.get("q") || "")}"></label>
@@ -615,14 +625,17 @@ async function pageDeals(params) {
       <label>${t("f.product")}<select name="instrument">${opt(fc.instrument, params.get("instrument"))}</select></label>
       <label>${t("f.category")}<select name="category">${opt(fc.category, params.get("category"))}</select></label>
       <label>${t("f.region")}<select name="region">${opt(fc.region, params.get("region"))}</select></label>
+      ${fc.status && fc.status.length ? `<label>${t("f.status")}<select name="status">${opt(fc.status, params.get("status"))}</select></label>` : ""}
+      ${fc.contract_form && fc.contract_form.length ? `<label>${t("f.form")}<select name="contract_form">${opt(fc.contract_form, params.get("contract_form"))}</select></label>` : ""}
+      ${fc.market && fc.market.length > 1 ? `<label>${t("f.market")}<select name="market">${opt(fc.market, params.get("market"))}</select></label>` : ""}
       <button type="button" class="btn ghost" id="dlReset">${t("f.reset")}</button>
       <button type="button" class="btn ghost" id="dlCsv">${t("f.csv")}</button>
     </form>
     <div class="tbl-wrap"><table class="wide"><thead><tr>
       <th class="sortable" data-s="deal_id">${t("th.deal")}</th><th class="sortable" data-s="deal_date">${t("th.date")}</th><th class="sortable" data-s="instrument_name">${t("th.product")}</th>
-      <th>${t("th.section")}</th><th class="r sortable" data-s="quantity">${t("th.qty")}</th><th class="r sortable" data-s="price">${t("th.price")}</th><th class="r sortable" data-s="amount">${t("th.amount")}</th>
+      <th>${t("th.section")}</th><th>${t("th.status")}</th><th class="r sortable" data-s="quantity">${t("th.qty")}</th><th class="r sortable" data-s="price">${t("th.price")}</th><th class="r sortable" data-s="amount">${t("th.amount")}</th>
       <th>${t("th.seller")}</th><th>${t("th.buyer")}</th><th>${t("th.region")}</th><th>${t("th.brokers")}</th><th>${t("th.source")}</th>
-    </tr></thead><tbody id="dlBody"><tr><td colspan="12" class="skel">${t("loading")}</td></tr></tbody></table></div>
+    </tr></thead><tbody id="dlBody"><tr><td colspan="13" class="skel">${t("loading")}</td></tr></tbody></table></div>
     <div class="pager"><span id="dlInfo"></span><div class="btns"><button class="btn ghost sm" id="dlPrev">${t("prev")}</button><span id="dlPage" style="align-self:center;padding:0 8px"></span><button class="btn ghost sm" id="dlNext">${t("next")}</button></div></div>
   </div>`;
 }
@@ -638,12 +651,15 @@ function afterDeals() {
     $("#dlPage").textContent = t("page", { p: page, t: fmt(pages) });
     $("#dlPrev").disabled = page <= 1; $("#dlNext").disabled = page >= pages;
     $("#dlBody").innerHTML = d.rows.map(r => `<tr>
-      <td class="num"><b>${esc(r.deal_id)}</b></td><td class="num">${dmy(r.deal_date)}</td>
-      <td><a href="#/commodity/${encodeURIComponent(r.instrument)}">${esc(r.instrument_name)}</a><br><small class="muted">${esc(r.category)}</small></td>
-      <td>${esc(r.market)}</td><td class="r num">${fmt(r.quantity)} ${esc(r.unit || "")}</td><td class="r num">${fmt(r.price)}</td><td class="r num"><b>${fmt(r.amount)}</b> ${esc(r.currency || "")}</td>
-      <td>${esc(r.seller)}</td><td>${esc(r.buyer)}</td><td>${esc(r.region)}</td>
+      <td class="num"><b>${esc(r.deal_id)}</b></td><td class="num">${dmy(r.deal_date)}${r.deal_time ? `<br><small class="muted">${esc(r.deal_time)}</small>` : ""}</td>
+      <td><a href="#/commodity/${encodeURIComponent(r.instrument)}">${esc(r.instrument_name)}</a><br><small class="muted">${esc(r.product_name && r.product_name !== r.instrument_name ? r.product_name : r.category)}</small></td>
+      <td>${esc(r.market)}${r.contract_form ? `<br><small class="muted">${esc(r.contract_form)}${r.trade_type ? " · " + esc(r.trade_type) : ""}</small>` : ""}</td>
+      <td><span class="st ${/Аннулир/.test(r.status || "") ? "bad" : /Исполнен/.test(r.status || "") ? "ok" : ""}">${esc(r.status || "—")}</span></td>
+      <td class="r num">${fmt(r.quantity)} ${esc(r.unit || "")}</td><td class="r num">${fmt(r.price)}</td>
+      <td class="r num"><b>${fmt(r.amount)}</b> ${esc(r.currency || "")}${r.currency === "USD" && r.amount_uzs ? `<br><small class="muted">≈ ${short(r.amount_uzs)} UZS</small>` : ""}</td>
+      <td>${esc(r.seller)}${r.seller_inn ? `<br><small class="muted">${esc(r.seller_inn)}</small>` : ""}</td><td>${esc(r.buyer)}${r.buyer_inn ? `<br><small class="muted">${esc(r.buyer_inn)}</small>` : ""}</td><td>${esc(r.region)}</td>
       <td><small>${esc(r.seller_broker || "—")}<br>${esc(r.buyer_broker || "—")}</small></td>
-      <td><small class="muted">${esc(r.source_file)}:${r.source_row}</small></td></tr>`).join("") || `<tr><td colspan="12" class="empty">—</td></tr>`;
+      <td><small class="muted">${esc(r.source_file)}:${r.source_row}</small></td></tr>`).join("") || `<tr><td colspan="13" class="empty">—</td></tr>`;
     history.replaceState(null, "", "#/deals?" + qs());
   };
   form.oninput = form.onchange = () => { page = 1; clearTimeout(form._t); form._t = setTimeout(load, 250); };
@@ -668,12 +684,12 @@ function afterDeals() {
 // participants
 async function pageParticipants() {
   const [br, pt] = await Promise.all([api("/api/brokers"), api("/api/participants")]);
-  return `<div class="page-h"><h1>${t("part.title")}</h1><p>${t("part.text")}</p></div>${await demoNote()}
+  return `<div class="page-h"><h1>${t("part.title")}</h1><p>${t("part.text")}</p></div>${await demoNote(true)}
   <div class="grid g2">
     ${sec(t("part.list"), `<div class="card tbl-wrap"><table><thead><tr><th>${t("th.name")}</th><th>${t("th.role")}</th><th>${t("th.region")}</th><th>${t("th.inn")}</th></tr></thead><tbody>
       ${pt.map(p => `<tr class="clk" data-href="#/deals?q=${encodeURIComponent(p.name)}"><td>${esc(p.name)}</td><td>${t("role." + p.role)}</td><td>${esc(p.region)}</td><td class="num">${esc(p.inn)}</td></tr>`).join("")}</tbody></table></div>`)}
-    ${sec(t("part.brokers"), `<div class="card tbl-wrap"><table><thead><tr><th>${t("th.code")}</th><th>${t("th.name")}</th><th>${t("th.license")}</th></tr></thead><tbody>
-      ${br.map(b => `<tr><td><b>${esc(b.code)}</b></td><td>${esc(b.name)}</td><td>${esc(b.license)}</td></tr>`).join("")}</tbody></table></div>`)}
+    ${sec(t("part.brokers"), `<div class="card tbl-wrap"><table><thead><tr><th>${t("th.code")}</th><th>${t("th.name")}</th><th>${t("th.inn")}</th><th>${t("th.region")}</th></tr></thead><tbody>
+      ${br.map(b => `<tr><td><b>${esc(b.code)}</b></td><td>${esc(b.name)}</td><td>${esc(b.inn ?? "")}</td><td>${esc(b.region ?? "")}</td></tr>`).join("")}</tbody></table></div>`)}
   </div>`;
 }
 
@@ -702,7 +718,7 @@ function chatHtml() {
     S.chat.map(m => `<div class="msg q">${esc(m.q)}</div>${answerHtml(m)}`).join("");
 }
 async function pageAgent() {
-  return `<div class="page-h"><h1>${t("ag.title")}</h1><p>${t("ag.text")}</p></div>${await demoNote()}
+  return `<div class="page-h"><h1>${t("ag.title")}</h1><p>${t("ag.text")}</p></div>${await demoNote(true)}
   <div class="agent">
     <div class="card chat">
       <div class="chat-log" id="log">${chatHtml()}</div>

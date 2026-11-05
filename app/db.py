@@ -8,14 +8,16 @@ from pathlib import Path
 import pandas as pd
 
 from . import config
-from .ingest import CANONICAL, normalize, read_any
+from .ingest import CANONICAL, NUMERIC, normalize, read_any
 
 SCHEMA = f"""
 CREATE TABLE IF NOT EXISTS deals (
-    {", ".join(f"{c} {'REAL' if c in ('quantity','price','amount') else 'TEXT'}" for c in CANONICAL)},
-    source_file TEXT, source_row INTEGER, row_hash TEXT UNIQUE
+    {", ".join(f"{c} {'REAL' if c in NUMERIC else 'TEXT'}" for c in CANONICAL)},
+    source_file TEXT, source_row INTEGER, row_hash TEXT UNIQUE,
+    search TEXT  -- qidiruv uchun: tovar, sotuvchi, xaridor nomlari kichik harfda
 );
 CREATE INDEX IF NOT EXISTS ix_deals_date ON deals(deal_date);
+CREATE INDEX IF NOT EXISTS ix_deals_id ON deals(deal_id);
 CREATE INDEX IF NOT EXISTS ix_deals_instr ON deals(instrument);
 CREATE TABLE IF NOT EXISTS sources (
     source_file TEXT PRIMARY KEY, exchange TEXT, url TEXT, loaded_at TEXT, rows INTEGER
@@ -32,14 +34,21 @@ def connect(path: Path | None = None, readonly: bool = False) -> sqlite3.Connect
         con = sqlite3.connect(path, check_same_thread=False)
         con.executescript(SCHEMA)
     con.row_factory = sqlite3.Row
+    # SQLite ning LOWER() faqat lotin harflarini kichraytiradi — kirill (Мука -> мука) uchun Python versiyasi
+    con.create_function("lower", 1, _lower, deterministic=True)
     return con
+
+
+def _lower(v):
+    return v.lower() if isinstance(v, str) else v
 
 
 def load_file(con: sqlite3.Connection, file: Path, exchange: str | None = None, url: str | None = None) -> dict:
     df = normalize(read_any(file), source_file=file.name, exchange=exchange)
     before = con.execute("SELECT COUNT(*) FROM deals").fetchone()[0]
     df.to_sql("_staging", con, if_exists="replace", index=False)
-    con.execute("INSERT OR IGNORE INTO deals SELECT * FROM _staging")
+    cols = ", ".join(df.columns)
+    con.execute(f"INSERT OR IGNORE INTO deals ({cols}) SELECT {cols} FROM _staging")
     con.execute("DROP TABLE _staging")
     added = con.execute("SELECT COUNT(*) FROM deals").fetchone()[0] - before
     con.execute(
@@ -113,8 +122,9 @@ def describe(con: sqlite3.Connection) -> dict:
 OTHER_TABLES = {
     "stock_trades": "Fond birjasi (aksiyalar) bitimlari: trade_time 'YYYY-MM-DD HH:MM', ticker, isin, issuer, sec_type (common/pref), price, quantity, volume, currency",
     "listings": "Kotirovka varag'idagi qimmatli qog'ozlar: ticker, isin, issuer, sec_type, currency, nominal, shares, listed_date",
-    "participants": "Savdo ishtirokchilari: name, role (seller/buyer), region, inn",
-    "brokers": "Brokerlar: code, name, license",
+    "participants": "Savdo ishtirokchilari (kompaniyalar): inn, name, region, activity, role (seller/buyer), vat_payer",
+    "contracts": "Shartnoma kartochkalari (deals.contract_id = contracts.contract_id): product, brand, size, grade, type, class, hs_code (TN VED), product_group, category, industry, unit, lot_size, currency, base_price, deposit, delivery_basis, region, warehouse, trade_type, market, contract_form, payment_days (to'lov muddati, kun), delivery_days (yetkazish muddati, to'lovdan keyin, kun), packing, seller_inn, registered, valid_until, instrument, instrument_name",
+    "brokers": "Brokerlar (deals.seller_broker / buyer_broker = brokers.code): code (BK001..), name, inn, region",
     "usd_rate": "Dollar kursi: date (YYYY-MM-DD), usd_uzs (1 USD necha so'm)",
     "uzex_quotes": "UZEX tovar kotirovkalari (bir kunlik): quote_date, name, category, price (o'rtacha narx UZS), change_abs, change_pct, source",
     "uzse_quotes": "UZSE aksiyalar kotirovkasi: quote_date, ticker, issuer, close_price (yopilish), last_price (oxirgi bitim), change_abs, source",

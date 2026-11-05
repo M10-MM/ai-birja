@@ -6,7 +6,8 @@
   python cli.py sql "SELECT COUNT(*) FROM deals"          # to'g'ridan-to'g'ri SELECT
   python cli.py ask "Oktyabrda jami savdo hajmi qancha?"  # agentga savol
   python cli.py chat                                      # interaktiv suhbat
-  python cli.py demo                                      # DEMO ma'lumotlarni yaratib yuklash
+  python cli.py demo                                      # baza: tanlov reyestri (data/uzex) yoki DEMO
+  python cli.py uzex [papka|zip]                          # tanlov reyestri (uzex_spot_data) ni yuklash
   python cli.py loadref data/demo                         # aksiyalar/ishtirokchilar/brokerlar/kurs CSV lari
   python cli.py serve                                     # veb interfeys: http://localhost:8000
 """
@@ -38,6 +39,7 @@ def main() -> None:
     pl = sub.add_parser("load"); pl.add_argument("files", nargs="+"); pl.add_argument("--exchange")
     sub.add_parser("sync")
     sub.add_parser("demo")
+    pu = sub.add_parser("uzex"); pu.add_argument("path", nargs="?")
     pr = sub.add_parser("loadref"); pr.add_argument("folder")
     sub.add_parser("info")
     ps = sub.add_parser("sql"); ps.add_argument("query")
@@ -57,12 +59,19 @@ def main() -> None:
         con = db.connect()
         if a.cmd == "demo":
             import runpy
+            from app import uzex
             runpy.run_path(str(Path(__file__).parent / "scripts" / "make_demo_data.py"), run_name="__main__")
-            print(json.dumps(db.load_file(con, folder / "DEMO_uzex_deals.csv", exchange="UZEX-DEMO"), ensure_ascii=False))
+            if not uzex.DEFAULT.exists():  # tanlov reyestri bo'lmasa — sun'iy DEMO bitimlar
+                print(json.dumps(db.load_file(con, folder / "DEMO_uzex_deals.csv", exchange="UZEX-DEMO"), ensure_ascii=False))
         print(json.dumps(market.load_reference(con, folder), ensure_ascii=False))
         real = Path(__file__).parent / "data" / "real"
         if a.cmd == "demo" and real.exists():  # haqiqiy kotirovkalar demo ustidan yoziladi
             print("real:", json.dumps(market.load_reference(con, real), ensure_ascii=False))
+        if a.cmd == "demo" and uzex.DEFAULT.exists():  # tanlov reyestri: bitimlar, ishtirokchilar, brokerlar, kurs
+            print("uzex:", json.dumps(uzex.load(con), ensure_ascii=False))
+    elif a.cmd == "uzex":
+        from app import uzex
+        print(json.dumps(uzex.load(db.connect(), a.path), ensure_ascii=False, indent=2))
     elif a.cmd == "sync":
         from app.sources.fetch import sync
         print(json.dumps(sync(), ensure_ascii=False, indent=2))

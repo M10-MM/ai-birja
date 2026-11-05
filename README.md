@@ -61,11 +61,19 @@ Batafsil texnik hujjat: [docs/TECHNICAL.md](docs/TECHNICAL.md)
 | [app/static/](app/static/) | sayt (HTML/CSS/JS, RU/EN) |
 | [data/real/](data/real/) | haqiqiy kotirovkalar (UZEX, UZSE) |
 | [tests/](tests/) | avtotestlar (`npm test`) |
-| [cli.py](cli.py) | buyruqlar: `serve`, `load`, `demo`, `ask`, `sql` |
+| [cli.py](cli.py) | buyruqlar: `serve`, `load`, `demo`, `uzex`, `ask`, `sql` |
+| [app/uzex.py](app/uzex.py) | tanlov reyestri (uzex_spot_data) importi |
+| [data/uzex/](data/uzex/) | tanlov ma'lumotlari (zip) |
 
 ## Ma'lumotlar
 
 - `data/real/` — 05.11.2026 holatiga UZEX tovar kotirovkalari (27), UZSE aksiyalar (71), aksiya bitimlari, listing, likvidlik
   («Данные торгов биржи UZEX.pdf» va uzse.uz dan).
-- Tovar bitimlari reyestri, ishtirokchilar, brokerlar, dollar kursi — **DEMO (sun'iy)**, `py cli.py demo` bilan yaratiladi.
-  Tanlovning rasmiy papkasini yuklash: `py cli.py load <fayl> --exchange UZEX`.
+- `data/uzex/uzex_spot_data.zip` — tanlov ma'lumotlari: tovar birjasi bitimlari reyestri (500 000 bitim, 03.01.2022 — 30.10.2026),
+  shartnoma kartochkalari (6 616), ishtirokchilar (14 392), brokerlar (120), dollar kursi. Ma'lumotlar o'ylab topilgan,
+  format — tovar-xomashyo birjasi reyestri. `py cli.py demo` (va Docker yig'ilishi) ularni avtomatik yuklaydi;
+  boshqa papka yoki zip: `py cli.py uzex <yo'l>`.
+  - Tovar = TN VED kodi (sotuvchilar bir tovarni turlicha yozgan); asl nom `product_name` da saqlanadi.
+  - Hajm = lotlar × lot hajmi, narx = summa / hajm. USD bitimlar so'mga bitim sanasidagi kurs bo'yicha (`amount_uzs`).
+  - Aylanma va narxlarda bekor qilingan (to'lanmagan) bitimlar hisobga olinmaydi.
+- Zip bo'lmasa — sun'iy DEMO reyestr yaratiladi.
