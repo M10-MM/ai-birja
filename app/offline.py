@@ -381,6 +381,12 @@ class OfflineAgent:
         if not cov[2]:  # tovar bitimlari reyestri bo'sh
             return [t["nodata"]]
 
+        # 1c) ishtirokchilar / brokerlar soni (tovar va davr ko'rsatilmagan)
+        count_q = re.search(r"skolko|kolichest|nechta|qancha|how many|number of|count", nq)
+        who_q = re.search(r"prodav|pokupat|uchastnik|sotuvchi|xaridor|ishtirokchi|seller|buyer|participant|broker", nq)
+        if count_q and who_q and not self.products(nq) and self.has("participants"):
+            return self._participants_count(nq, lang)
+
         # 2) bazada yo'q tovar
         prods = self.products(nq)
         if not prods:
@@ -524,6 +530,25 @@ class OfflineAgent:
                 txt = t["sum_all"].format(per=cap(who + per), n=fmt(r[0]), cx=cx, s=fmt(r[1]), cur=r[5] or "UZS")
             return [txt, "", self._src(t, wa, pa)]
         return [t["unclear"]]
+
+    def _participants_count(self, nq, lang) -> list[str]:
+        r = self.sql("SELECT COUNT(*) AS total, SUM(role = 'seller') AS sellers, SUM(role = 'buyer') AS buyers FROM participants")[0]
+        total, sellers, buyers = r[0], r[1] or 0, r[2] or 0
+        brokers = self.sql("SELECT COUNT(*) AS brokers FROM brokers")[0][0] if self.has("brokers") else 0
+        n = lambda v: fmt(v, 0)
+        if lang == "en":
+            out = [f"The participant registry has {n(total)} companies: {n(sellers)} sellers and {n(buyers)} buyers."]
+            if brokers: out.append(f"Broker offices: {n(brokers)}.")
+            out.append("Source: participants.csv, brokers.csv.")
+        elif lang == "uz":
+            out = [f"Ishtirokchilar reyestrida {n(total)} ta kompaniya: {n(sellers)} ta sotuvchi va {n(buyers)} ta xaridor."]
+            if brokers: out.append(f"Broker idoralari: {n(brokers)} ta.")
+            out.append("Manba: participants.csv, brokers.csv.")
+        else:
+            out = [f"В реестре участников {n(total)} компаний: {n(sellers)} продавцов и {n(buyers)} покупателей."]
+            if brokers: out.append(f"Брокерских контор: {n(brokers)}.")
+            out.append("Источник: participants.csv, brokers.csv.")
+        return out
 
     def _stock_quote(self, tk, lang, t) -> list[str]:
         r = self.sql("SELECT ticker, issuer, quote_date, close_price, last_price, change_abs, "

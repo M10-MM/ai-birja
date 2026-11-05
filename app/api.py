@@ -160,6 +160,11 @@ def participants():
     return market.table_rows(ro(), "participants")
 
 
+@app.get("/api/participants/search")
+def participants_search(q: str = "", role: str = "", page: int = 1, size: int = 50):
+    return market.participants_page(ro(), q, role, page, size)
+
+
 @app.get("/api/brokers")
 def brokers():
     return market.table_rows(ro(), "brokers")

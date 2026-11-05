@@ -682,15 +682,36 @@ function afterDeals() {
 }
 
 // participants
-async function pageParticipants() {
-  const [br, pt] = await Promise.all([api("/api/brokers"), api("/api/participants")]);
+async function pageParticipants(params) {
+  const q = params?.get("q") || "", role = params?.get("role") || "", page = +(params?.get("page") || 1);
+  const sp = new URLSearchParams({ q, role, page, size: 50 });
+  const [br, pt] = await Promise.all([api("/api/brokers"), api("/api/participants/search?" + sp)]);
+  const pages = Math.max(1, Math.ceil(pt.total / pt.size));
+  const link = (pg) => { const x = new URLSearchParams(); if (q) x.set("q", q); if (role) x.set("role", role); if (pg > 1) x.set("page", pg); const s = x.toString(); return "#/participants" + (s ? "?" + s : ""); };
+  const ru = LANG === "ru";
+  const form = `<form class="filters" id="ptForm" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+    <input name="q" value="${esc(q)}" placeholder="${ru ? "Название или ИНН" : "Name or INN"}" style="flex:1;min-width:180px">
+    <select name="role"><option value="">${ru ? "Все роли" : "All roles"}</option>
+      <option value="seller"${role === "seller" ? " selected" : ""}>${t("role.seller")}</option>
+      <option value="buyer"${role === "buyer" ? " selected" : ""}>${t("role.buyer")}</option></select>
+    <button class="btn sm">${ru ? "Найти" : "Search"}</button></form>`;
+  const pager = `<div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:8px">
+    <small class="muted">${ru ? "Найдено" : "Found"}: ${fmt(pt.total)} · ${ru ? "стр." : "page"} ${fmt(pt.page)} / ${fmt(pages)}</small>
+    <span>${pt.page > 1 ? `<a class="btn ghost sm" href="${link(pt.page - 1)}">←</a>` : ""} ${pt.page < pages ? `<a class="btn ghost sm" href="${link(pt.page + 1)}">→</a>` : ""}</span></div>`;
   return `<div class="page-h"><h1>${t("part.title")}</h1><p>${t("part.text")}</p></div>${await demoNote(true)}
   <div class="grid g2">
-    ${sec(t("part.list"), `<div class="card tbl-wrap"><table><thead><tr><th>${t("th.name")}</th><th>${t("th.role")}</th><th>${t("th.region")}</th><th>${t("th.inn")}</th></tr></thead><tbody>
-      ${pt.map(p => `<tr class="clk" data-href="#/deals?q=${encodeURIComponent(p.name)}"><td>${esc(p.name)}</td><td>${t("role." + p.role)}</td><td>${esc(p.region)}</td><td class="num">${esc(p.inn)}</td></tr>`).join("")}</tbody></table></div>`)}
+    ${sec(t("part.list"), `${form}<div class="card tbl-wrap"><table><thead><tr><th>${t("th.name")}</th><th>${t("th.role")}</th><th>${t("th.region")}</th><th>${t("th.inn")}</th></tr></thead><tbody>
+      ${pt.rows.map(p => `<tr class="clk" data-href="#/deals?q=${encodeURIComponent(p.inn)}"><td>${esc(p.name)}</td><td>${t("role." + p.role)}</td><td>${esc(p.region)}</td><td class="num">${esc(p.inn)}</td></tr>`).join("")}</tbody></table></div>${pager}`)}
     ${sec(t("part.brokers"), `<div class="card tbl-wrap"><table><thead><tr><th>${t("th.code")}</th><th>${t("th.name")}</th><th>${t("th.inn")}</th><th>${t("th.region")}</th></tr></thead><tbody>
       ${br.map(b => `<tr><td><b>${esc(b.code)}</b></td><td>${esc(b.name)}</td><td>${esc(b.inn ?? "")}</td><td>${esc(b.region ?? "")}</td></tr>`).join("")}</tbody></table></div>`)}
   </div>`;
+}
+function afterParticipants() {
+  $("#ptForm")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const x = new URLSearchParams(); for (const [k, v] of new FormData(e.target)) if (v) x.set(k, v);
+    location.hash = "#/participants" + (x.toString() ? "?" + x : "");
+  });
 }
 
 // AI agent
@@ -1030,7 +1051,7 @@ const ROUTES = [
   [/^\/commodities$/, pageCommodities, null, "/commodities"],
   [/^\/commodity\/([^/]+)$/, pageCommodity, null, "/commodities"],
   [/^\/deals$/, pageDeals, afterDeals, "/deals"],
-  [/^\/participants$/, pageParticipants, null, "/participants"],
+  [/^\/participants$/, pageParticipants, afterParticipants, "/participants"],
   [/^\/agent$/, pageAgent, afterAgent, "/agent"],
   [/^\/cabinet$/, pageCabinet, afterCabinet, null],
   [/^\/about$/, pageAbout, null, "/about"],

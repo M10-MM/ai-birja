@@ -90,3 +90,17 @@ def test_offline_registry_questions(tmp_path, data):
     assert "в среднем 3.0 дн." in r.answer and r.verified
     r = ask("Какой товар самый продаваемый по сумме в 2025 году?")  # товар, а не продавец
     assert r.answer.splitlines()[1].startswith("1. Медный катод") and r.verified
+
+
+def test_participants_paging_and_count(tmp_path, data):
+    con = db.connect(tmp_path / "t.db")
+    uzex.load(con, data)
+    total = con.execute("SELECT COUNT(*) FROM participants").fetchone()[0]
+    sellers = con.execute("SELECT COUNT(*) FROM participants WHERE role = 'seller'").fetchone()[0]
+    page = market.participants_page(con, size=10)
+    assert page["total"] == total and len(page["rows"]) == min(10, total)
+    assert market.participants_page(con, role="seller")["total"] == sellers
+    inn = page["rows"][0]["inn"]
+    assert market.participants_page(con, q=str(inn)[:9])["total"] >= 1
+    r = OfflineAgent(con).ask("Сколько продавцов на бирже?")
+    assert r.verified and f"{sellers} продав" in r.answer.replace("\u00a0", " ")

@@ -249,6 +249,28 @@ def table_rows(con, table: str, limit: int = 500) -> list[dict]:
     return _rows(con.execute(f"SELECT * FROM {table} LIMIT ?", (limit,)))
 
 
+def participants_page(con, q: str = "", role: str = "", page: int = 1, size: int = 50) -> dict:
+    """Ishtirokchilar ro'yxati: qidiruv (nom yoki INN), rol filtri, sahifalash."""
+    if not _has(con, "participants"):
+        return {"total": 0, "page": 1, "size": size, "rows": []}
+    size = max(10, min(int(size or 50), 200))
+    page = max(1, int(page or 1))
+    where, args = [], []
+    q = (q or "").strip()
+    if q:
+        if q.isdigit():
+            where.append("inn LIKE ?"); args.append(q + "%")
+        else:
+            where.append("lower(name) LIKE ?"); args.append("%" + q.lower() + "%")
+    if role in ("seller", "buyer"):
+        where.append("role = ?"); args.append(role)
+    w = (" WHERE " + " AND ".join(where)) if where else ""
+    total = con.execute(f"SELECT COUNT(*) FROM participants{w}", args).fetchone()[0]
+    rows = _rows(con.execute(f"SELECT inn, name, region, activity, role, vat_payer FROM participants{w} ORDER BY name LIMIT ? OFFSET ?",
+                             args + [size, (page - 1) * size]))
+    return {"total": total, "page": page, "size": size, "rows": rows}
+
+
 def usd_rates(con) -> list[dict]:
     if not _has(con, "usd_rate"):
         return []
