@@ -448,7 +448,7 @@ async function pageHome() {
   const [ov, tr, liq, lst, note] = await Promise.all([
     cached("ov", () => api("/api/market/overview")), api("/api/stocks/trades?limit=10"),
     cached("liq", () => api("/api/stocks/liquidity")), cached("lst", () => api("/api/stocks/listings")), demoNote()]);
-  const usd = ov.usd ? `<div class="hs"><small>${t("st.usd")}</small><b class="num">${fmt(ov.usd.rate, 2)}</b><span class="${cls(ov.usd.rate - ov.usd.prev)}">${sign(ov.usd.rate - ov.usd.prev)}${fmt(ov.usd.rate - ov.usd.prev, 2)} · ${dmy(ov.usd.date)}</span></div>` : "";
+  const usd = `<div class="hs"><small>${t("st.usd")}</small><b class="num">${fmt(USD_TODAY.rate, 2)}</b><span>${dmy(USD_TODAY.date)}${ov.usd ? ` · ${t("st.usdData")}: ${fmt(ov.usd.rate, 2)} (${dmy(ov.usd.date)})` : ""}</span></div>`;
   const months = ov.monthly.slice(-24);
   return note + `
   <div class="hero">
@@ -1044,6 +1044,7 @@ async function pageInfo(slug) {
 }
 
 // ---------------- router ----------------
+const USD_TODAY = { rate: 12020, date: "2026-11-05" }; // bugungi kurs (bosh sahifa); agent usd_rates.csv bo‘yicha hisoblaydi
 const ROUTES = [
   [/^\/$/, pageHome, afterHome, "/"],
   [/^\/stocks$/, pageStocks, afterStocks, "/stocks"],
