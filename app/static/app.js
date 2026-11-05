@@ -834,6 +834,15 @@ async function pageAbout() {
       <li><b>LLM:</b> Claude (Anthropic API) с вызовом инструментов — модель не видит «сырые» данные целиком, а запрашивает их через SQL.</li>
       <li><b>Frontend:</b> HTML/CSS/JS без фреймворков, графики на SVG, языки RU/EN; агент понимает вопросы на RU/UZ/EN.</li>
       <li><b>Кабинет:</b> регистрация/вход (PBKDF2-хеши паролей, токены сессий), избранное, история вопросов, загрузка файлов.</li></ul>
+    <h3>Подготовка данных (реестр uzex_spot_data)</h3>
+    <ul><li>Каждая сделка связана с карточкой контракта: валюта, код ТН ВЭД, категория. Названия участников — по ИНН, брокеры — по коду.</li>
+      <li>Один товар продавцы пишут по-разному («Мука», «МУКА ПШЕНИЧНАЯ…»), поэтому товар = код ТН ВЭД с единым названием (42 товара); исходное название сохранено. Мазут и дизель, бензин в литрах и в тоннах разделены.</li>
+      <li>Объём = лоты × размер лота, цена = сумма ÷ объём; дизель из кг приведён к тоннам.</li>
+      <li>USD-сделки пересчитаны в сумы по курсу на дату сделки (<code>amount_uzs</code>).</li>
+      <li>Аннулированные (неоплаченные) сделки не входят в обороты, объёмы и цены; в количестве сделок показываются отдельно.</li></ul>
+    <h3>Два режима агента</h3>
+    <ul><li><b>Claude + SQL</b> — если задан API-ключ: любые свободные вопросы.</li>
+      <li><b>Офлайн-движок</b> — без ключа или при ошибке API: распознаёт товар (RU/UZ/EN, падежи), период, условия (экспорт, спот/форвард/фьючерс, тип аукциона) и показатель (количество, сумма, топ-N, средняя цена и её динамика, доля аннулированных, статусы, сроки оплаты и поставки, оборот в USD) → готовый SQL. Если вопрос не понят — не отвечает наугад.</li></ul>
     <h3>Как гарантируется отсутствие выдумок</h3>
     <ol><li>Системная инструкция запрещает использовать знания модели: только результаты инструментов.</li>
       <li>Все вычисления — в SQL; база открыта в режиме <code>mode=ro</code>, разрешён только один <code>SELECT/WITH</code>.</li>
@@ -849,6 +858,15 @@ async function pageAbout() {
       <li><b>LLM:</b> Claude (Anthropic API) with tool use — the model never sees the raw data wholesale, it queries it with SQL.</li>
       <li><b>Frontend:</b> framework-free HTML/CSS/JS, SVG charts, RU/EN interface; the agent understands RU/UZ/EN questions.</li>
       <li><b>Account:</b> sign up / sign in (PBKDF2 password hashes, session tokens), watchlist, question history, file upload.</li></ul>
+    <h3>Data preparation (uzex_spot_data registry)</h3>
+    <ul><li>Every deal is linked to its contract card: currency, HS code, category. Party names come from the TIN, brokers from their code.</li>
+      <li>Sellers spell the same product differently ("Мука", "МУКА ПШЕНИЧНАЯ…"), so a commodity = HS code with one name (42 commodities); the original name is kept. Fuel oil vs diesel and petrol in litres vs tonnes are split.</li>
+      <li>Volume = lots × lot size, price = amount ÷ volume; diesel sold in kg is converted to tonnes.</li>
+      <li>USD deals are converted to UZS at the rate on the deal date (<code>amount_uzs</code>).</li>
+      <li>Cancelled (unpaid) deals are excluded from turnover, volume and prices; deal counts show them separately.</li></ul>
+    <h3>Two agent modes</h3>
+    <ul><li><b>Claude + SQL</b> — when an API key is set: any free-form question.</li>
+      <li><b>Offline engine</b> — no key or API error: detects the commodity (RU/UZ/EN, word endings), period, conditions (export, spot/forward/futures, auction type) and metric (count, amount, top-N, average price and its trend, cancelled share, statuses, payment and delivery times, USD turnover) → ready SQL. If the question isn't understood, it doesn't guess.</li></ul>
     <h3>How we prevent made-up answers</h3>
     <ol><li>The system prompt forbids using model knowledge: tool results only.</li>
       <li>All calculations run in SQL; the DB is opened <code>mode=ro</code> and only a single <code>SELECT/WITH</code> is allowed.</li>

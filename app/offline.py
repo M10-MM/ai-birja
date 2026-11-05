@@ -63,6 +63,19 @@ FOREIGN = [(r"zolot|\bgold|oltin", {"ru": "золото", "uz": "oltin", "en": "
            (r"neft[\s-]*(syr|xom)|crude", {"ru": "сырая нефть", "uz": "xom neft", "en": "crude oil"}),
            (r"alyumin|alumin", {"ru": "алюминий", "uz": "alyuminiy", "en": "aluminium"})]
 
+# Savoldagi shart -> (ustun, normallashgan savoldagi naqsh, qiymat). Faqat ustun bazada bo'lsa qo'llanadi.
+FILTERS = [
+    ("market", r"eksport|export", "Экспортный"),
+    ("market", r"vnutrenn|ichki bozor|ichki savdo|domestic", "Внутренний"),
+    ("contract_form", r"forvard|forward", "Форвард"),
+    ("contract_form", r"fyuchers|futures|fyucher", "Фьючерс"),
+    ("contract_form", r"\bspot", "Спот"),
+    ("trade_type", r"angliysk|english auction|ingliz auksion", "Английский аукцион"),
+    ("trade_type", r"obratn|reverse auction|teskari auksion", "Обратный аукцион"),
+    ("trade_type", r"dvustoron|double auction|ikki tomonlama", "Двусторонний аукцион"),
+    ("status", r"chastichn|qisman|partial", "Исполнен(Частично)"),
+]
+
 MONTHS = [  # (oy raqami, o'zaklar)
     (1, ["yanvar", "january", "jan "]), (2, ["fevral", "february"]), (3, ["mart", "march"]),
     (4, ["aprel", "april"]), (5, ["\\bmay\\b", "\\bmaya\\b", "\\bmae\\b", "\\bmay "]), (6, ["iyun", "june"]),
@@ -103,8 +116,9 @@ T = {
         "foreign": "В данных нет сделок по товару «{x}». Доступные товары: {lst}.",
         "noperiod": "В данных нет сделок{p}. Данные охватывают период {a} — {b}.",
         "unclear": "Не удалось однозначно понять вопрос, поэтому я не отвечаю наугад. Уточните товар/тикер, период и показатель — например: «Сколько сделок по Mis katodi в 2025 году и на какую сумму?» или «Топ-5 покупателей дизельного топлива за 2024 год».",
-        "sum": "{who}{per}: {n} сделок на сумму {s} {cur}, объём {q} {unit}, средневзвешенная цена {p} {cur}.",
-        "sum_all": "{per}: {n} сделок на общую сумму {s} {cur}.",
+        "cx": " (из них {c} аннулированы и не учтены в сумме)",
+        "sum": "{who}{per}: {n} сделок{cx} на сумму {s} {cur}, объём {q} {unit}, средневзвешенная цена {p} {cur}.",
+        "sum_all": "{per}: {n} сделок{cx} на общую сумму {s} {cur}.",
         "top_amount": "Топ-{k} {dim} по сумме сделок{who}{per}:",
         "top_count": "Топ-{k} {dim} по числу сделок{who}{per}:",
         "row_amount": "{i}. {name} — {s} {cur} ({n} сделок)",
@@ -118,6 +132,14 @@ T = {
                  "category": "товарных групп", "seller_broker": "брокеров продавца", "buyer_broker": "брокеров покупателя",
                  "broker": "брокеров"},
         "in": " в {x}", "for_year": " за {y} год", "for_month": " за {m} {y}", "for_range": " за {a} — {b}",
+        "flt": " [{x}]",
+        "cancel": "{who}{per}: всего {n} сделок, из них аннулировано (не оплачено) {c} — {pct}% сделок; сумма аннулированных {cs} UZS ({cpct}% от суммы всех сделок).",
+        "status": "Состояние сделок{who}{per} (сделок, сумма UZS):",
+        "status_row": "{name} — {n} ({pct}%), {s}",
+        "days": "{who}{per}: от сделки до оплаты в среднем {pay} дн. ({np} оплаченных сделок), от оплаты до поставки — {dl} дн., от сделки до поставки — {tot} дн. ({nd} поставленных сделок).",
+        "yearly": "Средневзвешенная цена{who}{per} по годам (UZS за ед.):",
+        "yr_row": "{y}: {p} (сделок: {n})",
+        "chg": "Изменение с {a} по {b}: {d} UZS ({pct}%).",
         "for_prod": " по товару «{x}»", "src": "Источник: таблица {t}, файл(ы): {f}. Суммы в UZS (USD-сделки — по курсу на дату сделки), аннулированные (неоплаченные) сделки не учитываются. SQL-запросы показаны ниже.",
     },
     "uz": {
@@ -129,8 +151,9 @@ T = {
         "foreign": "Ma'lumotlarda «{x}» tovari bo'yicha bitimlar yo'q. Mavjud tovarlar: {lst}.",
         "noperiod": "Ma'lumotlarda{p} bitimlar yo'q. Ma'lumotlar qamrovi: {a} — {b}.",
         "unclear": "Savolni aniq tushuna olmadim, shuning uchun taxminiy javob bermayman. Tovar/tiker, davr va ko'rsatkichni aniqlashtiring — masalan: «2025-yilda Mis katodi bo'yicha nechta bitim va qancha summa?»",
-        "sum": "{who}{per}: {n} ta bitim, jami summa {s} {cur}, hajm {q} {unit}, o'rtacha tortilgan narx {p} {cur}.",
-        "sum_all": "{per}: {n} ta bitim, jami summa {s} {cur}.",
+        "cx": " (shundan {c} tasi bekor qilingan, summaga kiritilmagan)",
+        "sum": "{who}{per}: {n} ta bitim{cx}, jami summa {s} {cur}, hajm {q} {unit}, o'rtacha tortilgan narx {p} {cur}.",
+        "sum_all": "{per}: {n} ta bitim{cx}, jami summa {s} {cur}.",
         "top_amount": "Bitimlar summasi bo'yicha top-{k} {dim}{who}{per}:",
         "top_count": "Bitimlar soni bo'yicha top-{k} {dim}{who}{per}:",
         "row_amount": "{i}. {name} — {s} {cur} ({n} ta bitim)",
@@ -144,6 +167,14 @@ T = {
                  "category": "tovar guruhi", "seller_broker": "sotuvchi brokeri", "buyer_broker": "xaridor brokeri",
                  "broker": "broker"},
         "in": " {x} da", "for_year": " {y}-yilda", "for_month": " {y}-yil {m} oyida", "for_range": " {a} — {b} davrida",
+        "flt": " [{x}]",
+        "cancel": "{who}{per}: jami {n} ta bitim, shundan {c} tasi bekor qilingan (to'lanmagan) — bitimlarning {pct}%; bekor qilinganlar summasi {cs} UZS (barcha bitimlar summasining {cpct}%).",
+        "status": "Bitimlar holati{who}{per} (bitimlar soni, summa UZS):",
+        "status_row": "{name} — {n} ({pct}%), {s}",
+        "days": "{who}{per}: bitimdan to'lovgacha o'rtacha {pay} kun ({np} ta to'langan bitim), to'lovdan yetkazishgacha — {dl} kun, bitimdan yetkazishgacha — {tot} kun ({nd} ta yetkazilgan bitim).",
+        "yearly": "O'rtacha tortilgan narx{who}{per}, yillar bo'yicha (UZS/birlik):",
+        "yr_row": "{y}: {p} (bitimlar: {n})",
+        "chg": "{a} dan {b} gacha o'zgarish: {d} UZS ({pct}%).",
         "for_prod": " «{x}» bo'yicha", "src": "Manba: {t} jadvali, fayl(lar): {f}. Summalar so'mda (USD bitimlar — bitim sanasidagi kurs bo'yicha), bekor qilingan (to'lanmagan) bitimlar hisobga olinmagan. SQL so'rovlar quyida.",
     },
     "en": {
@@ -155,8 +186,9 @@ T = {
         "foreign": "The data has no deals for \"{x}\". Available commodities: {lst}.",
         "noperiod": "The data has no deals{p}. Data covers {a} — {b}.",
         "unclear": "I couldn't understand the question unambiguously, so I won't guess. Please specify the commodity/ticker, period and metric — e.g. \"How many Mis katodi deals in 2025 and their total amount?\"",
-        "sum": "{who}{per}: {n} deals totalling {s} {cur}, quantity {q} {unit}, volume-weighted price {p} {cur}.",
-        "sum_all": "{per}: {n} deals totalling {s} {cur}.",
+        "cx": " ({c} of them cancelled, not counted in the amount)",
+        "sum": "{who}{per}: {n} deals{cx} totalling {s} {cur}, quantity {q} {unit}, volume-weighted price {p} {cur}.",
+        "sum_all": "{per}: {n} deals{cx} totalling {s} {cur}.",
         "top_amount": "Top-{k} {dim} by deal amount{who}{per}:",
         "top_count": "Top-{k} {dim} by number of deals{who}{per}:",
         "row_amount": "{i}. {name} — {s} {cur} ({n} deals)",
@@ -170,6 +202,14 @@ T = {
                  "category": "commodity groups", "seller_broker": "seller-side brokers", "buyer_broker": "buyer-side brokers",
                  "broker": "brokers"},
         "in": " in {x}", "for_year": " in {y}", "for_month": " in {m} {y}", "for_range": " for {a} — {b}",
+        "flt": " [{x}]",
+        "cancel": "{who}{per}: {n} deals in total, {c} of them cancelled (unpaid) — {pct}% of deals; cancelled amount {cs} UZS ({cpct}% of the total amount).",
+        "status": "Deal status{who}{per} (deals, amount UZS):",
+        "status_row": "{name} — {n} ({pct}%), {s}",
+        "days": "{who}{per}: from deal to payment {pay} days on average ({np} paid deals), from payment to delivery {dl} days, from deal to delivery {tot} days ({nd} delivered deals).",
+        "yearly": "Volume-weighted price{who}{per} by year (UZS per unit):",
+        "yr_row": "{y}: {p} (deals: {n})",
+        "chg": "Change from {a} to {b}: {d} UZS ({pct}%).",
         "for_prod": " for \"{x}\"", "src": "Source: table {t}, file(s): {f}. Amounts in UZS (USD deals converted at the rate on the deal date); cancelled (unpaid) deals are excluded. SQL queries are shown below.",
     },
 }
@@ -264,7 +304,8 @@ class OfflineAgent:
             return "broker"
         if re.search(r"pokupat|xaridor|buyer|customer|zakazchik", nq):
             return "buyer"
-        if re.search(r"prodav|sotuvchi|seller|proizvodit|ishlab chiqar|producer|postavsh", nq):
+        # "prodav(e|ts)" — продавец/продавцов; "продаваемый товар" (prodavaem) sotuvchi emas
+        if re.search(r"prodav(e|ts)|sotuvchi|seller|proizvodit|ishlab chiqar|producer|postavshik", nq):
             return "seller"
         if re.search(r"region|hudud|viloyat|oblast|viloyat", nq):
             return "region"
@@ -288,12 +329,25 @@ class OfflineAgent:
         check = check_answer(answer, self.evidence, question)
         return AgentResult(answer, check["ok"], check["unsupported"], self.queries, self.evidence)
 
-    def _where(self, prods, d1, d2):
-        w, p = [OK], []
+    def filters(self, nq: str) -> list[tuple[str, str]]:
+        """Savoldagi qo'shimcha shartlar: eksport/ichki, spot/forvard/fyuchers, auksion turi, qisman ijro."""
+        cols = set(self.cols("deals"))
+        out = []
+        for col, pat, val in FILTERS:
+            if col in cols and re.search(pat, nq):
+                if col == "market" and not self.con.execute("SELECT 1 FROM deals WHERE market=? LIMIT 1", (val,)).fetchone():
+                    continue
+                out.append((col, val))
+        return out
+
+    def _where(self, prods, d1, d2, flt=(), ok=True):
+        w, p = ([OK] if ok else ["1=1"]), []
         if prods:
             w.append("instrument_name IN (" + ",".join("?" * len(prods)) + ")"); p += prods
         if d1:
             w.append("deal_date BETWEEN ? AND ?"); p += [d1, d2]
+        for col, val in flt:
+            w.append(f"{col} = ?"); p.append(val)
         return " AND ".join(w), tuple(p)
 
     def _src(self, t, w, p) -> str:
@@ -343,10 +397,56 @@ class OfflineAgent:
         if prods:  # tovar nomlari ham dalil sifatida qayd qilinadi (nomdagi sonlar, masalan "0,5%")
             prods = [r[0] for r in self.sql("SELECT DISTINCT instrument_name FROM deals WHERE instrument_name IN ("
                                              + ",".join("?" * len(prods)) + ") ORDER BY 1", tuple(prods))]
+        flt = self.filters(nq)
         who = t["for_prod"].format(x=", ".join(prods)) if prods else ""
-        w, p = self._where(prods, d1, d2)
+        if flt:
+            who += t["flt"].format(x=", ".join(v for _, v in flt))
+        w, p = self._where(prods, d1, d2, flt)
         k, dim = self.top_n(nq), self.dim(nq)
         by_count = bool(re.search(r"sdelok|bitim|deals|trades|chislu|soni|nechta|skolko", nq)) and not re.search(r"summ|oborot|aylanma|turnover|amount|qiymat", nq)
+        has_status = "status" in self.cols("deals")
+        cap = lambda x: x.strip()[:1].upper() + x.strip()[1:]
+
+        # 2b) bekor qilingan bitimlar ulushi
+        if has_status and re.search(r"annul|bekor|cancel|otmen|neoplach|tolanmagan|unpaid", nq):
+            wa, pa = self._where(prods, d1, d2, flt, ok=False)
+            r = self.sql(
+                f"SELECT COUNT(*), SUM(status LIKE 'Аннулирован%'), "
+                f"ROUND(100.0 * SUM(status LIKE 'Аннулирован%') / COUNT(*), 2), "
+                f"ROUND(SUM(CASE WHEN status LIKE 'Аннулирован%' THEN {AMT} END), 2), "
+                f"ROUND(100.0 * SUM(CASE WHEN status LIKE 'Аннулирован%' THEN {AMT} END) / SUM({AMT}), 2) "
+                f"FROM deals WHERE {wa}", pa)[0]
+            if not r[0]:
+                return [t["nodata"]]
+            head = cap(who + per) or cap(t["for_range"].format(a=cov[0], b=cov[1]))
+            return [t["cancel"].format(who=head, per="", n=fmt(r[0]), c=fmt(r[1] or 0), pct=fmt(r[2] or 0),
+                                       cs=fmt(r[3] or 0), cpct=fmt(r[4] or 0)), "", self._src(t, wa, pa)]
+
+        # 2c) holatlar bo'yicha taqsimot
+        if has_status and re.search(r"sostoyan|status|holat", nq):
+            wa, pa = self._where(prods, d1, d2, flt, ok=False)
+            rows = self.sql(
+                f"SELECT status, COUNT(*) n, ROUND(100.0 * COUNT(*) / (SELECT COUNT(*) FROM deals WHERE {wa}), 2), "
+                f"ROUND(SUM({AMT}), 2) FROM deals WHERE {wa} GROUP BY status ORDER BY n DESC", pa + pa)
+            if not rows:
+                return [t["nodata"]]
+            return [t["status"].format(who=who, per=per)] + [
+                t["status_row"].format(name=r[0], n=fmt(r[1]), pct=fmt(r[2]), s=fmt(r[3])) for r in rows] \
+                + ["", self._src(t, wa, pa)]
+
+        # 2d) to'lov va yetkazish muddatlari (kunlarda)
+        if has_status and re.search(r"\bdn|\bden|\bday|\bkun|srok|muddat|vremya|qancha vaqt|how long|skolko vremeni", nq) \
+                and re.search(r"oplat|tolov|tolan|pay|postav|yetkaz|deliver", nq):
+            r = self.sql(
+                f"SELECT ROUND(AVG(julianday(payment_date) - julianday(deal_date)), 1), COUNT(payment_date), "
+                f"ROUND(AVG(julianday(delivery_date) - julianday(payment_date)), 1), "
+                f"ROUND(AVG(julianday(delivery_date) - julianday(deal_date)), 1), COUNT(delivery_date) "
+                f"FROM deals WHERE {w}", p)[0]
+            if not r[1]:
+                return [t["nodata"]]
+            head = cap(who + per) or cap(t["for_range"].format(a=cov[0], b=cov[1]))
+            return [t["days"].format(who=head, per="", pay=fmt(r[0], 1), np=fmt(r[1]), dl=fmt(r[2], 1),
+                                     tot=fmt(r[3], 1), nd=fmt(r[4])), "", self._src(t, w, p)]
 
         # 3) dollarda
         if re.search(r"\busd\b|dollar|долл", nq) and self.has("usd_rate"):
@@ -364,8 +464,25 @@ class OfflineAgent:
                 f"FROM deals WHERE {w} AND quantity > 0 GROUP BY m ORDER BY m", p)
             if not rows:
                 return [t["nodata"]]
-            out = [t["avg"].format(who=who, per=per, cur=rows[0][3] or "UZS")]
-            out += [t["avg_row"].format(m=r[0], p=fmt(r[1]), n=fmt(r[2])) for r in rows[-24:]]
+            change_q = re.search(r"izmeni|change|ozgar|dinamik|\brost|vyros|snizi|osish|trend", nq)
+            if len(rows) <= 24 and not change_q:
+                out = [t["avg"].format(who=who, per=per, cur=rows[0][3] or "UZS")]
+                out += [t["avg_row"].format(m=r[0], p=fmt(r[1]), n=fmt(r[2])) for r in rows]
+                return out + ["", self._src(t, w, p)]
+            # uzun davr yoki o'zgarish savoli: yillar bo'yicha + birinchi va oxirgi yil orasidagi o'zgarish
+            yrs = self.sql(
+                f"SELECT substr(deal_date,1,4) y, ROUND(SUM({AMT})/SUM(quantity),2) vwap, COUNT(*) n "
+                f"FROM deals WHERE {w} AND quantity > 0 GROUP BY y ORDER BY y", p)
+            out = [t["yearly"].format(who=who, per=per)]
+            out += [t["yr_row"].format(y=r[0], p=fmt(r[1]), n=fmt(r[2])) for r in yrs]
+            if len(yrs) > 1:
+                c = self.sql(
+                    f"WITH y AS (SELECT substr(deal_date,1,4) y, SUM({AMT})/SUM(quantity) v FROM deals "
+                    f"WHERE {w} AND quantity > 0 GROUP BY y) "
+                    f"SELECT (SELECT MIN(y) FROM y), (SELECT MAX(y) FROM y), "
+                    f"ROUND((SELECT v FROM y ORDER BY y DESC LIMIT 1) - (SELECT v FROM y ORDER BY y LIMIT 1), 2), "
+                    f"ROUND(100.0 * ((SELECT v FROM y ORDER BY y DESC LIMIT 1) / (SELECT v FROM y ORDER BY y LIMIT 1) - 1), 2)", p)[0]
+                out += ["", t["chg"].format(a=c[0], b=c[1], d=fmt(c[2]), pct=fmt(c[3]))]
             return out + ["", self._src(t, w, p)]
 
         # 5) top-N
@@ -390,17 +507,22 @@ class OfflineAgent:
                 + ["", self._src(t, w, p)]
 
         # 6) soni va summa
-        if prods or d1:
-            r = self.sql(f"SELECT COUNT(*), ROUND(SUM({AMT}),2), SUM(quantity), ROUND(SUM({AMT})/SUM(quantity),2), "
-                         f"MAX(unit), 'UZS' FROM deals WHERE {w}", p)[0]
+        if prods or d1 or flt:
+            # soni — barcha bitimlar (bekor qilinganlar ham, alohida ko'rsatiladi); summa, hajm, narx — bekor qilinganlarsiz
+            wa, pa = self._where(prods, d1, d2, flt, ok=False)
+            cancelled = "status LIKE 'Аннулирован%'" if has_status else "0"
+            r = self.sql(f"SELECT COUNT(*), ROUND(SUM(CASE WHEN {OK} THEN {AMT} END),2), SUM(CASE WHEN {OK} THEN quantity END), "
+                         f"ROUND(SUM(CASE WHEN {OK} THEN {AMT} END)/SUM(CASE WHEN {OK} THEN quantity END),2), "
+                         f"MAX(unit), 'UZS', SUM({cancelled}) FROM deals WHERE {wa}", pa)[0]
             if not r[0]:
                 return [t["nodata"]]
+            cx = t["cx"].format(c=fmt(r[6])) if r[6] else ""
             if prods:
-                txt = t["sum"].format(who=(who.strip()[:1].upper() + who.strip()[1:]), per=per, n=fmt(r[0]),
+                txt = t["sum"].format(who=cap(who), per=per, n=fmt(r[0]), cx=cx,
                                       s=fmt(r[1]), q=fmt(r[2]), unit=r[4] or "", p=fmt(r[3]), cur=r[5] or "UZS")
             else:
-                txt = t["sum_all"].format(per=per.strip()[:1].upper() + per.strip()[1:], n=fmt(r[0]), s=fmt(r[1]), cur=r[5] or "UZS")
-            return [txt, "", self._src(t, w, p)]
+                txt = t["sum_all"].format(per=cap(who + per), n=fmt(r[0]), cx=cx, s=fmt(r[1]), cur=r[5] or "UZS")
+            return [txt, "", self._src(t, wa, pa)]
         return [t["unclear"]]
 
     def _stock_quote(self, tk, lang, t) -> list[str]:

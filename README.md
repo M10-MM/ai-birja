@@ -26,7 +26,7 @@ git clone <ushbu repo>
 cd <repo>
 npm run setup      # = py -m pip install -r requirements.txt
 npm start          # = py cli.py serve  -> http://127.0.0.1:8765
-npm test           # 24 ta avtotest
+npm test           # 27 ta avtotest
 ```
 
 npm bo'lmasa: `py -m pip install -r requirements.txt && py cli.py serve`

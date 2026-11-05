@@ -76,3 +76,17 @@ def test_turnover_excludes_cancelled(tmp_path, data):
     assert market.deals(con, q="900000002")["total"] == 3
     r = OfflineAgent(con).ask("Сколько сделок по муке в 2025 году?")
     assert "1 сделок" in r.answer and "5 000 000" in r.answer and r.verified
+
+
+def test_offline_registry_questions(tmp_path, data):
+    con = db.connect(tmp_path / "t.db")
+    uzex.load(con, data)
+    ask = lambda q: OfflineAgent(con).ask(q)
+    r = ask("Какая доля аннулированных сделок в 2025 году?")
+    assert "3 сделок" in r.answer and "аннулировано (не оплачено) 1" in r.answer and "33.33%" in r.answer and r.verified
+    r = ask("Сколько экспортных сделок в 2025 году?")  # filtr: market = Экспортный
+    assert "1 сделок" in r.answer and "260 006 500" in r.answer and r.verified
+    r = ask("Сколько в среднем дней от сделки до оплаты?")
+    assert "в среднем 3.0 дн." in r.answer and r.verified
+    r = ask("Какой товар самый продаваемый по сумме в 2025 году?")  # товар, а не продавец
+    assert r.answer.splitlines()[1].startswith("1. Медный катод") and r.verified
