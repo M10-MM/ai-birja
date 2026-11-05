@@ -8,7 +8,7 @@ AI-agent va birja sayti prototipi (RU / EN interfeys, agent RU / UZ / EN savolla
 | | |
 |---|---|
 | **Prototip havolasi** | _yozing: https://..._ (lokal ishga tushirish — pastda) |
-| **Jamoa a'zolari** | 1. _Ism Familiya_ · 2. _Ism Familiya_ · 3. _Ism Familiya_ |
+| **Jamoa a'zolari** | 1. Mirakbar Mirzaraimov · 2. Bakhtiyor Parpiev · 3. Dilshod Fayzullaev |
 | **Yechim tavsifi** | quyida va saytdagi «О решении» sahifasida |
 
 ## Onlayn ishga tushirish (1 klik)
