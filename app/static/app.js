@@ -60,7 +60,7 @@ const I18N = {
     "part.title": "Участники торгов", "part.text": "Справочники участников и брокеров из папки данных.", "part.brokers": "Брокеры", "part.list": "Участники",
     "role.seller": "Продавец", "role.buyer": "Покупатель",
     "ag.title": "AI-агент по биржевым данным", "ag.text": "Отвечает только по данным. Если ответа в данных нет — так и скажет.",
-    "ag.ph": "Задайте вопрос на русском, узбекском или английском…", "ag.send": "Отправить", "ag.thinking": "Ищу в данных",
+    "ag.ph": "Задайте вопрос на русском или узбекском…", "ag.send": "Отправить", "ag.thinking": "Ищу в данных",
     "ag.ok": "Все числа подтверждены данными", "ag.no": "Не все числа подтверждены: ", "ag.sql": "SQL-запросы ({n})",
     "ag.ev": "Данные, на которых основан ответ", "ag.time": "Время ответа: {s} с", "ag.examples": "Примеры вопросов",
     "ag.rules": "Как агент гарантирует точность", "ag.clear": "Новый диалог",
@@ -82,84 +82,84 @@ const I18N = {
     "info.text": "Этот раздел есть в структуре сайта биржи, но в папке данных конкурса нет его документов, поэтому прототип не заполняет его текстом (мы ничего не выдумываем). Все рыночные данные — акции, товары, сделки, участники, брокеры, курс — доступны в соответствующих разделах и через AI-агента.",
     "ag.engine.claude": "Claude + SQL", "ag.engine.offline": "Офлайн-движок: правила → SQL (без LLM)",
   },
-  en: {
-    "nav.home": "Home", "nav.stocks": "Stocks", "nav.commodities": "Commodities", "nav.deals": "Deal registry",
-    "nav.participants": "Participants", "nav.agent": "AI agent", "nav.about": "Solution",
-    "auth.choose": "Please choose", "auth.login": "Login", "auth.password": "Password", "auth.signin": "Sign in",
-    "auth.forgot": "Forgot password?", "auth.register": "Sign up", "auth.cabinet": "Account", "auth.enter": "Sign in",
-    "auth.name": "Full name", "auth.create": "Create account", "auth.logout": "Log out", "auth.role": "Role",
-    "auth.err.invalid": "Wrong login or password", "auth.err.exists": "This login is already taken",
-    "auth.err.short": "Login needs 3+ characters, password 6+", "auth.forgot.text": "Password recovery is not available in the prototype — please create a new account.",
-    "role.investor": "Investor", "role.broker": "Broker", "role.participant": "Trading participant",
-    "footer.text": "Prototype: an exchange data website and an AI agent that answers only from the loaded data and checks every number.",
-    "cov": "Data: {n} deals · {from} — {to}",
-    "demo": "Share (UZSE) and commodity (UZEX) quotes, share trades, listing, liquidity and the broker registry come from the file \"Данные торгов биржи UZEX.pdf\" and the exchange site as of 05.11.2026. The commodity deal registry, participants and USD rate are still DEMO (synthetic): load the contest data folder — python cli.py load <file> --exchange UZEX",
-    "util.issuer": "Issuer", "util.trade": "Go to trading", "util.src": "Quotes as of {d}",
-    "gov.title": "Government institutions", "th.close": "Close price", "dt.daytrades": "Trades during the day",
-    "dt.source": "Source", "dt.qdate": "Quote date", "dt.ntrades": "Trades today", "dt.quote": "UZEX quote",
-    "dt.noreg": "The deal registry has no deals for this commodity.", "dt.reg": "Registry deals ({n})",
-    "f.contacts": "Contacts", "f.location": "Location", "f.social": "Social media",
-    "f.contact_btn": "Contact us", "f.hours": "Monday–Friday 9:00–18:00",
-    "f.address": "Address: add your team address", "f.about": "Contest prototype: an exchange data website and an AI agent that answers only from the data. When using materials, a reference to the sources (uzex.uz, uzse.uz) is required.",
-    "f.fill": "fill in", "f.sources": "Data sources",
-    "hero.title": "Exchange data and an AI agent that never makes things up",
-    "hero.text": "Ask in Russian, Uzbek or English — the agent writes SQL against the deal registry, shows its sources and checks every number in the answer.",
-    "hero.ph": "e.g. Which commodity had the highest turnover in October 2026?", "hero.ask": "Ask",
-    "st.day": "Daily turnover", "st.month": "Monthly turnover", "st.deals": "Total deals", "st.usd": "USD rate", "st.usdData": "in contest data",
-    "st.daydeals": "{n} deals · {d}", "st.monthdeals": "{n} deals",
-    "sec.trades": "Trading results", "sec.listings": "Securities included in the exchange quotation list",
-    "sec.liq": "Liquidity levels of shares in the quotation list", "sec.monthly": "Commodity exchange turnover by month",
-    "sec.cats": "Turnover by commodity group, last month", "more": "More",
-    "liq.asof": "As of {m} · {n} instruments", "liq.high": "high liquidity", "liq.mid": "medium liquidity",
-    "liq.low": "low liquidity", "liq.top": "Top-10 most liquid shares",
-    "th.time": "Time", "th.code": "Code", "th.logo": "Logo", "th.issuer": "Issuer", "th.type": "Security type",
-    "th.market": "Market", "th.board": "Board", "th.price": "Price", "th.qty": "Quantity", "th.volume": "Volume",
-    "th.ticker": "Ticker", "th.listed": "Listed on", "th.currency": "Currency", "th.nominal": "Nominal value", "th.count": "Shares",
-    "th.last": "Last price", "th.chg": "Change", "th.dayvol": "Day volume", "th.vol30": "30-day volume",
-    "th.cap": "Market cap", "th.liq": "Liquidity", "th.deal": "Deal #", "th.date": "Date", "th.product": "Commodity",
-    "th.category": "Group", "th.amount": "Amount", "th.seller": "Seller", "th.buyer": "Buyer", "th.region": "Region",
-    "th.section": "Type / form", "th.status": "Status", "f.status": "Status", "f.form": "Contract form", "f.market": "Contract type",
-    "ds": "The deal registry is the contest dataset \"uzex_spot_data\" (fictional data in the commodity exchange registry format): {n} deals, {a} — {b}. Turnover is in UZS (USD deals at the rate on the deal date); cancelled (unpaid) deals are not counted in turnover.",
-    "th.source": "Source", "th.deals": "Deals", "th.turnover": "Turnover", "th.month": "Month",
-    "th.vwap": "VWAP", "th.low": "Low", "th.high": "High", "th.name": "Name", "th.role": "Role",
-    "th.inn": "TIN", "th.license": "License", "th.unit": "Unit", "th.brokers": "Brokers (sell/buy)",
-    "type.common": "Common shares", "type.pref": "Preferred shares",
-    "stocks.title": "Stocks", "stocks.text": "All securities on the quotation list: prices, change, volumes and 12-month liquidity.",
-    "stocks.search": "Search by ticker or issuer", "all": "All",
-    "com.title": "Commodity exchange", "com.text": "Commodity quotes: volume-weighted price on the last trading day and change vs. the previous one.",
-    "deals.title": "Exchange deal registry", "deals.text": "Every deal with its number, status, parties, brokers, source file and row.",
-    "f.search": "Search: commodity, party, deal # or TIN", "f.from": "From", "f.to": "To", "f.category": "Group", "f.region": "Region",
-    "f.product": "Commodity", "f.reset": "Reset", "f.csv": "Download CSV",
-    "pager": "{n} deals found · total {s}", "prev": "← Prev", "next": "Next →", "page": "Page {p} of {t}",
-    "dt.issuer": "Issuer", "dt.isin": "ISIN", "dt.type": "Type", "dt.nominal": "Nominal", "dt.shares": "Shares outstanding",
-    "dt.listed": "Listed since", "dt.cap": "Market cap", "dt.liq": "Liquidity (months traded of 12)",
-    "dt.chart": "Daily closing price", "dt.trades": "Latest trades", "dt.watch": "Add to watchlist", "dt.watched": "In watchlist",
-    "dt.ask": "Ask the agent about it", "dt.cchart": "Volume-weighted price by month", "dt.buyers": "Largest buyers",
-    "dt.period": "Trading period", "dt.monthly": "Monthly statistics", "dt.totq": "Total quantity", "back": "← Back",
-    "part.title": "Trading participants", "part.text": "Participant and broker reference lists from the data folder.", "part.brokers": "Brokers", "part.list": "Participants",
-    "role.seller": "Seller", "role.buyer": "Buyer",
-    "ag.title": "AI agent for exchange data", "ag.text": "Answers only from the data. If the data has no answer, it says so.",
-    "ag.ph": "Ask in Russian, Uzbek or English…", "ag.send": "Send", "ag.thinking": "Searching the data",
-    "ag.ok": "All numbers verified against the data", "ag.no": "Some numbers not verified: ", "ag.sql": "SQL queries ({n})",
-    "ag.ev": "Data the answer is based on", "ag.time": "Answered in {s} s", "ag.examples": "Example questions",
-    "ag.rules": "How the agent stays accurate", "ag.clear": "New chat",
-    "ag.r1": "Every calculation is a read-only SQL query.",
-    "ag.r2": "Every number in the answer is automatically checked against query results.",
-    "ag.r3": "If a number is not confirmed, the model rewrites the answer.",
-    "ag.r4": "No data — the agent says so plainly.",
-    "ag.r5": "SQL queries and source rows are shown.",
-    "ag.err": "Error: ", "ag.hello": "Hello! I answer questions about the deal registry, stocks, participants, brokers and the USD rate. Ask away.",
-    "cab.title": "Personal account", "cab.watch": "Watchlist", "cab.hist": "Questions you asked the agent", "cab.upload": "Upload data",
-    "cab.upload.text": "Upload a deals file (CSV / XLSX / JSON / HTML) — columns are mapped automatically.",
-    "cab.uploaded": "Uploaded: {f} — new deals: {n}", "cab.nowatch": "Add stocks or commodities to your watchlist (★).",
-    "cab.nohist": "You haven't asked anything yet.", "cab.since": "Member since {d}",
-    "about.title": "Solution", "notfound": "Page not found", "loading": "Loading…",
-    "watch.login": "Sign in to use the watchlist",
-    "search": "Search", "search.ph": "Ticker, issuer, commodity, participant or section…", "search.ask": "Ask the AI agent",
-    "trades.text": "Latest share trades: time, code, issuer, price, quantity and volume.",
-    "usd.title": "USD rate", "usd.text": "USD/UZS rate from the data folder — the agent uses it to convert amounts to dollars.",
-    "info.text": "This section exists in the exchange site structure, but the contest data folder has no documents for it, so the prototype doesn't fill it with text (we don't make anything up). All market data — stocks, commodities, deals, participants, brokers, rate — is available in the matching sections and through the AI agent.",
-    "ag.engine.claude": "Claude + SQL", "ag.engine.offline": "Offline engine: rules → SQL (no LLM)",
+  uz: {
+    "nav.home": "Bosh sahifa", "nav.stocks": "Aksiyalar", "nav.commodities": "Tovarlar", "nav.deals": "Bitimlar reyestri",
+    "nav.participants": "Ishtirokchilar", "nav.agent": "AI-agent", "nav.about": "Yechim",
+    "auth.choose": "Tanlang", "auth.login": "Login", "auth.password": "Parol", "auth.signin": "Kirish",
+    "auth.forgot": "Parolni unutdingizmi?", "auth.register": "Ro‘yxatdan o‘tish", "auth.cabinet": "Kabinet", "auth.enter": "Kirish",
+    "auth.name": "F.I.Sh.", "auth.create": "Hisob yaratish", "auth.logout": "Chiqish", "auth.role": "Rol",
+    "auth.err.invalid": "Login yoki parol noto‘g‘ri", "auth.err.exists": "Bu login band",
+    "auth.err.short": "Login kamida 3 belgi, parol kamida 6 belgi", "auth.forgot.text": "Prototipda parolni tiklash yo‘q — yangi hisob yarating.",
+    "role.investor": "Investor", "role.broker": "Broker", "role.participant": "Savdo ishtirokchisi",
+    "footer.text": "Prototip: birja ma'lumotlari sayti va faqat yuklangan ma'lumotlar asosida javob beradigan, har bir sonni tekshiradigan AI-agent.",
+    "cov": "Ma'lumotlar: {n} ta bitim · {from} — {to}",
+    "demo": "Aksiyalar (UZSE) va tovarlar (UZEX) kotirovkalari, aksiyalar bo‘yicha bitimlar, listing, likvidlik va brokerlar reyestri — «Данные торгов биржи UZEX.pdf» fayli va birja saytidan, 05.11.2026 holatiga. Tovar bitimlari reyestri, ishtirokchilar va USD kursi hozircha DEMO (sintetik): tanlov ma'lumotlar papkasini yuklang — python cli.py load <fayl> --exchange UZEX",
+    "util.issuer": "Emitent", "util.trade": "Savdoga o‘tish", "util.src": "Kotirovkalar {d} holatiga",
+    "gov.title": "Davlat tashkilotlari", "th.close": "Yopilish narxi", "dt.daytrades": "Kun davomidagi bitimlar",
+    "dt.source": "Manba", "dt.qdate": "Kotirovka sanasi", "dt.ntrades": "Bugungi bitimlar", "dt.quote": "UZEX kotirovkasi",
+    "dt.noreg": "Bitimlar reyestrida bu tovar bo‘yicha bitim yo‘q.", "dt.reg": "Reyestrdagi bitimlar ({n})",
+    "f.contacts": "Kontaktlar", "f.location": "Manzil", "f.social": "Ijtimoiy tarmoqlar",
+    "f.contact_btn": "Bog‘lanish", "f.hours": "Dushanba–Juma 9:00–18:00",
+    "f.address": "Manzil: jamoa manzilini kiriting", "f.about": "Tanlov uchun prototip: birja ma'lumotlari sayti va faqat ma'lumotlar asosida javob beradigan AI-agent. Materiallardan foydalanilganda manbalarga (uzex.uz, uzse.uz) havola majburiy.",
+    "f.fill": "to‘ldiring", "f.sources": "Ma'lumot manbalari",
+    "hero.title": "Birja ma'lumotlari va hech narsani o‘ylab topmaydigan AI-agent",
+    "hero.text": "O‘zbek yoki rus tilida so‘rang — agent bitimlar reyestriga SQL yozadi, manbalarni ko‘rsatadi va javobdagi har bir sonni tekshiradi.",
+    "hero.ph": "masalan: 2026-yil oktyabrda qaysi tovar eng katta aylanma bergan?", "hero.ask": "So‘rash",
+    "st.day": "Kunlik aylanma", "st.month": "Oylik aylanma", "st.deals": "Jami bitimlar", "st.usd": "USD kursi", "st.usdData": "tanlov ma'lumotlarida",
+    "st.daydeals": "{n} ta bitim · {d}", "st.monthdeals": "{n} ta bitim",
+    "sec.trades": "Savdo natijalari", "sec.listings": "Birja kotirovka varag‘iga kiritilgan qimmatli qog‘ozlar",
+    "sec.liq": "Kotirovka varag‘idagi aksiyalar likvidlik darajasi", "sec.monthly": "Tovar birjasi oylik aylanmasi",
+    "sec.cats": "Tovar guruhlari bo‘yicha aylanma, oxirgi oy", "more": "Batafsil",
+    "liq.asof": "{m} holatiga · {n} ta instrument", "liq.high": "yuqori likvidlik", "liq.mid": "o‘rta likvidlik",
+    "liq.low": "past likvidlik", "liq.top": "Eng likvid 10 ta aksiya",
+    "th.time": "Vaqt", "th.code": "Kod", "th.logo": "Logotip", "th.issuer": "Emitent", "th.type": "Qimmatli qog‘oz turi",
+    "th.market": "Bozor", "th.board": "Maydoncha", "th.price": "Narx", "th.qty": "Miqdor", "th.volume": "Hajm",
+    "th.ticker": "Tiker", "th.listed": "Listingga kiritilgan", "th.currency": "Valyuta", "th.nominal": "Nominal qiymat", "th.count": "Aksiyalar soni",
+    "th.last": "Oxirgi narx", "th.chg": "O‘zgarish", "th.dayvol": "Kunlik hajm", "th.vol30": "30 kunlik hajm",
+    "th.cap": "Kapitallashuv", "th.liq": "Likvidlik", "th.deal": "Bitim №", "th.date": "Sana", "th.product": "Tovar",
+    "th.category": "Guruh", "th.amount": "Summa", "th.seller": "Sotuvchi", "th.buyer": "Xaridor", "th.region": "Hudud",
+    "th.section": "Turi / shakli", "th.status": "Holati", "f.status": "Holati", "f.form": "Shartnoma shakli", "f.market": "Shartnoma turi",
+    "ds": "Bitimlar reyestri — tanlovning «uzex_spot_data» ma'lumotlar to‘plami (tovar birjasi reyestri formatidagi to‘qima ma'lumotlar): {n} ta bitim, {a} — {b}. Aylanma so‘mda (USD bitimlar bitim sanasidagi kurs bo‘yicha); bekor qilingan (to‘lanmagan) bitimlar aylanmaga kirmaydi.",
+    "th.source": "Manba", "th.deals": "Bitimlar", "th.turnover": "Aylanma", "th.month": "Oy",
+    "th.vwap": "O‘rtacha narx (VWAP)", "th.low": "Min", "th.high": "Maks", "th.name": "Nomi", "th.role": "Rol",
+    "th.inn": "STIR (INN)", "th.license": "Litsenziya", "th.unit": "O‘lchov birligi", "th.brokers": "Brokerlar (sotuv/xarid)",
+    "type.common": "Oddiy aksiyalar", "type.pref": "Imtiyozli aksiyalar",
+    "stocks.title": "Aksiyalar", "stocks.text": "Kotirovka varag‘idagi barcha qimmatli qog‘ozlar: narxlar, o‘zgarish, hajmlar va 12 oylik likvidlik.",
+    "stocks.search": "Tiker yoki emitent bo‘yicha qidirish", "all": "Barchasi",
+    "com.title": "Tovar birjasi", "com.text": "Tovar kotirovkalari: oxirgi savdo kunidagi hajm bo‘yicha o‘rtacha narx va oldingi kunga nisbatan o‘zgarish.",
+    "deals.title": "Birja bitimlari reyestri", "deals.text": "Har bir bitim: raqami, holati, tomonlar, brokerlar, manba fayl va qator.",
+    "f.search": "Qidiruv: tovar, tomon, bitim № yoki STIR", "f.from": "Dan", "f.to": "Gacha", "f.category": "Guruh", "f.region": "Hudud",
+    "f.product": "Tovar", "f.reset": "Tozalash", "f.csv": "CSV yuklab olish",
+    "pager": "{n} ta bitim topildi · jami {s}", "prev": "← Oldingi", "next": "Keyingi →", "page": "{p}-sahifa / {t}",
+    "dt.issuer": "Emitent", "dt.isin": "ISIN", "dt.type": "Turi", "dt.nominal": "Nominal", "dt.shares": "Muomaladagi aksiyalar",
+    "dt.listed": "Listingda", "dt.cap": "Kapitallashuv", "dt.liq": "Likvidlik (12 oydan savdo bo‘lgan oylar)",
+    "dt.chart": "Kunlik yopilish narxi", "dt.trades": "Oxirgi bitimlar", "dt.watch": "Kuzatuvga qo‘shish", "dt.watched": "Kuzatuvda",
+    "dt.ask": "Agentdan so‘rash", "dt.cchart": "Oylar bo‘yicha hajmga tortilgan narx", "dt.buyers": "Eng yirik xaridorlar",
+    "dt.period": "Savdo davri", "dt.monthly": "Oylik statistika", "dt.totq": "Jami miqdor", "back": "← Orqaga",
+    "part.title": "Savdo ishtirokchilari", "part.text": "Ma'lumotlar papkasidagi ishtirokchilar va brokerlar ro‘yxati.", "part.brokers": "Brokerlar", "part.list": "Ishtirokchilar",
+    "role.seller": "Sotuvchi", "role.buyer": "Xaridor",
+    "ag.title": "Birja ma'lumotlari bo‘yicha AI-agent", "ag.text": "Faqat ma'lumotlar asosida javob beradi. Ma'lumotlarda javob bo‘lmasa, shuni aytadi.",
+    "ag.ph": "O‘zbek yoki rus tilida so‘rang…", "ag.send": "Yuborish", "ag.thinking": "Ma'lumotlardan qidirilmoqda",
+    "ag.ok": "Barcha sonlar ma'lumotlar bilan tasdiqlandi", "ag.no": "Ba'zi sonlar tasdiqlanmadi: ", "ag.sql": "SQL so‘rovlar ({n})",
+    "ag.ev": "Javob asoslangan ma'lumotlar", "ag.time": "Javob {s} s da", "ag.examples": "Namuna savollar",
+    "ag.rules": "Agent qanday aniq qoladi", "ag.clear": "Yangi suhbat",
+    "ag.r1": "Har bir hisob — faqat o‘qish uchun SQL so‘rov.",
+    "ag.r2": "Javobdagi har bir son so‘rov natijalari bilan avtomatik solishtiriladi.",
+    "ag.r3": "Son tasdiqlanmasa, model javobni qayta yozadi.",
+    "ag.r4": "Ma'lumot bo‘lmasa — agent buni ochiq aytadi.",
+    "ag.r5": "SQL so‘rovlar va manba qatorlari ko‘rsatiladi.",
+    "ag.err": "Xato: ", "ag.hello": "Assalomu alaykum! Bitimlar reyestri, aksiyalar, ishtirokchilar, brokerlar va dollar kursi bo‘yicha savollarga javob beraman. Savol bering.",
+    "cab.title": "Shaxsiy kabinet", "cab.watch": "Kuzatuv ro‘yxati", "cab.hist": "Agentga bergan savollaringiz", "cab.upload": "Ma'lumot yuklash",
+    "cab.upload.text": "Bitimlar faylini yuklang (CSV / XLSX / JSON / HTML) — ustunlar avtomatik moslashtiriladi.",
+    "cab.uploaded": "Yuklandi: {f} — yangi bitimlar: {n}", "cab.nowatch": "Aksiya yoki tovarlarni kuzatuvga qo‘shing (★).",
+    "cab.nohist": "Hali savol bermadingiz.", "cab.since": "{d} dan beri a'zo",
+    "about.title": "Yechim", "notfound": "Sahifa topilmadi", "loading": "Yuklanmoqda…",
+    "watch.login": "Kuzatuv ro‘yxati uchun tizimga kiring",
+    "search": "Qidiruv", "search.ph": "Tiker, emitent, tovar, ishtirokchi yoki bo‘lim…", "search.ask": "AI-agentdan so‘rash",
+    "trades.text": "Aksiyalar bo‘yicha oxirgi bitimlar: vaqt, kod, emitent, narx, miqdor va hajm.",
+    "usd.title": "Dollar kursi", "usd.text": "Ma'lumotlar papkasidagi USD/UZS kursi — agent summalarni dollarga o‘tkazishda undan foydalanadi.",
+    "info.text": "Bu bo‘lim birja sayti tuzilmasida bor, lekin tanlov ma'lumotlar papkasida unga oid hujjatlar yo‘q, shuning uchun prototip uni matn bilan to‘ldirmaydi (biz hech narsani o‘ylab topmaymiz). Barcha bozor ma'lumotlari — aksiyalar, tovarlar, bitimlar, ishtirokchilar, brokerlar, kurs — tegishli bo‘limlarda va AI-agent orqali mavjud.",
+    "ag.engine.claude": "Claude + SQL", "ag.engine.offline": "Oflayn dvigatel: qoidalar → SQL (LLMsiz)",
   },
 };
 const EXAMPLES = [
@@ -169,7 +169,7 @@ const EXAMPLES = [
   ["UZ", "Qaysi broker sotuvchi tomonida eng ko'p bitim qilgan?"],
   ["RU", "Средняя цена Polipropilen B-310 по месяцам в 2026 году"],
   ["UZ", "IPTB aksiyasining oktyabr oyidagi savdo hajmi qancha?"],
-  ["EN", "What was the total turnover in USD in September 2026 using the daily USD rate?"],
+  ["UZ", "2023-yil mart oyida o‘rtacha dollar kursi qancha bo‘lgan?"],
   ["RU", "Сколько сделок было по золоту в 2023 году?"],
 ];
 
@@ -192,7 +192,7 @@ function fmt(n, d) {
 }
 function short(n) {
   if (n === null || n === undefined) return "—";
-  const a = Math.abs(n), u = LANG === "ru" ? ["трлн", "млрд", "млн", "тыс"] : ["T", "B", "M", "K"];
+  const a = Math.abs(n), u = LANG === "ru" ? ["трлн", "млрд", "млн", "тыс"] : ["trln", "mlrd", "mln", "ming"];
   if (a >= 1e12) return fmt(n / 1e12, 2) + " " + u[0];
   if (a >= 1e9) return fmt(n / 1e9, 2) + " " + u[1];
   if (a >= 1e6) return fmt(n / 1e6, 2) + " " + u[2];
@@ -397,12 +397,12 @@ document.addEventListener("mousemove", e => {
 
 
 const GOV = [
-  { short: "NAPP", ru: "Национальное агентство перспективных проектов", en: "National Agency of Perspective Projects", url: "https://napp.uz", c: "#b08d2e" },
-  { short: "my.gov.uz", ru: "Единый портал интерактивных госуслуг", en: "Single portal of public services", url: "https://my.gov.uz", c: "#1d8fe1" },
-  { short: "gov.uz", ru: "Правительственный портал Республики Узбекистан", en: "Government portal of Uzbekistan", url: "https://gov.uz", c: "#1a9a4b" },
-  { short: "UzSAMA", ru: "Агентство по управлению государственными активами", en: "State Assets Management Agency", url: "https://davaktiv.uz", c: "#3b4a9c" },
-  { short: "CSD", ru: "Центральный депозитарий ценных бумаг", en: "Central Securities Depository", url: "https://deponet.uz", c: "#1239a6" },
-  { short: "LexUZ", ru: "Национальная база данных законодательства", en: "National legislation database", url: "https://lex.uz", c: "#1b6fc2" },
+  { short: "NAPP", ru: "Национальное агентство перспективных проектов", uz: "Istiqbolli loyihalar milliy agentligi", url: "https://napp.uz", c: "#b08d2e" },
+  { short: "my.gov.uz", ru: "Единый портал интерактивных госуслуг", uz: "Interaktiv davlat xizmatlari yagona portali", url: "https://my.gov.uz", c: "#1d8fe1" },
+  { short: "gov.uz", ru: "Правительственный портал Республики Узбекистан", uz: "O‘zbekiston Respublikasi Hukumat portali", url: "https://gov.uz", c: "#1a9a4b" },
+  { short: "UzSAMA", ru: "Агентство по управлению государственными активами", uz: "Davlat aktivlarini boshqarish agentligi", url: "https://davaktiv.uz", c: "#3b4a9c" },
+  { short: "CSD", ru: "Центральный депозитарий ценных бумаг", uz: "Qimmatli qog‘ozlar markaziy depozitariysi", url: "https://deponet.uz", c: "#1239a6" },
+  { short: "LexUZ", ru: "Национальная база данных законодательства", uz: "Qonunchilik ma'lumotlari milliy bazasi", url: "https://lex.uz", c: "#1b6fc2" },
 ];
 const govSection = () => sec(t("gov.title"), `<div class="gov">${GOV.map(g => `<a class="gov-card" href="${g.url}" target="_blank" rel="noopener" title="${esc(tl(g))}">
   <b style="color:${g.c}">${esc(g.short)}</b><small>${esc(tl(g))}</small></a>`).join("")}</div>`);
@@ -441,14 +441,14 @@ function liqWidget(l) {
 function monthName(ym) {
   if (!ym) return "—";
   const [y, m] = ym.split("-");
-  return new Date(+y, +m - 1, 1).toLocaleString(LANG === "ru" ? "ru-RU" : "en-US", { month: "long", year: "numeric" }).replace(/^./, c => c.toUpperCase()).replace(" г.", "");
+  return new Date(+y, +m - 1, 1).toLocaleString(LANG === "ru" ? "ru-RU" : "uz-Latn-UZ", { month: "long", year: "numeric" }).replace(/^./, c => c.toUpperCase()).replace(" г.", "");
 }
 
 async function pageHome() {
   const [ov, tr, liq, lst, note] = await Promise.all([
     cached("ov", () => api("/api/market/overview")), api("/api/stocks/trades?limit=10"),
     cached("liq", () => api("/api/stocks/liquidity")), cached("lst", () => api("/api/stocks/listings")), demoNote()]);
-  const usd = `<div class="hs"><small>${t("st.usd")}</small><b class="num">${fmt(USD_TODAY.rate, 2)}</b><span>${dmy(USD_TODAY.date)}${ov.usd ? ` · ${t("st.usdData")}: ${fmt(ov.usd.rate, 2)} (${dmy(ov.usd.date)})` : ""}</span></div>`;
+  const usd = ov.usd ? `<div class="hs"><small>${t("st.usd")}</small><b class="num">${fmt(ov.usd.rate, 2)}</b><span class="${cls(ov.usd.rate - ov.usd.prev)}">${sign(ov.usd.rate - ov.usd.prev)}${fmt(ov.usd.rate - ov.usd.prev, 2)} · ${dmy(ov.usd.date)}</span></div>` : "";
   const months = ov.monthly.slice(-24);
   return note + `
   <div class="hero">
@@ -530,7 +530,7 @@ async function pageStock(tk) {
   </div>
   <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
     <button class="btn ghost sm star-btn" data-watch="stock:${s.ticker}" data-label="1">${isWatched("stock", s.ticker) ? "★ " + t("dt.watched") : "☆ " + t("dt.watch")}</button>
-    <button class="btn sm" data-q="${esc(LANG === "ru" ? `Какая цена акций ${s.ticker}?` : `What is the price of ${s.ticker} shares?`)}">${t("dt.ask")}</button>
+    <button class="btn sm" data-q="${esc(LANG === "ru" ? `Какая цена акций ${s.ticker}?` : `${s.ticker} aksiyasining narxi qancha?`)}">${t("dt.ask")}</button>
   </div></div>
   <div class="grid g2">
     <div class="card pad"><h3 style="margin:0 0 10px">${s.real ? t("dt.daytrades") : t("dt.chart")}</h3>${s.series.length > 1 ? lineChart(s.series.map(p => ({ x: s.real ? p.day.slice(11) : dmy(p.day), y: p.close })), { fmtY: v => fmt(v, v < 100 ? 2 : 0) }) : `<div class="empty">—</div>`}</div>
@@ -578,7 +578,7 @@ async function pageCommodity(code) {
     <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
       <button class="btn ghost sm" data-watch="commodity:${esc(c.code)}" data-label="1">${isWatched("commodity", c.code) ? "★ " + t("dt.watched") : "☆ " + t("dt.watch")}</button>
       ${c.registry_query ? `<a class="btn ghost sm" href="#/deals?q=${encodeURIComponent(c.registry_query)}">${t("dt.reg", { n: fmt(c.registry_deals) })}</a>` : ""}
-      <button class="btn sm" data-q="${esc(LANG === "ru" ? `Какая котировка «${c.name}»?` : `What is the quote for "${c.name}"?`)}">${t("dt.ask")}</button>
+      <button class="btn sm" data-q="${esc(LANG === "ru" ? `Какая котировка «${c.name}»?` : `«${c.name}» kotirovkasi qancha?`)}">${t("dt.ask")}</button>
     </div>
     <div class="kv" style="margin-top:20px">
       <div><small>${t("th.vwap")}</small><b class="num">${fmt(q.price, 2)}</b></div>
@@ -594,7 +594,7 @@ async function pageCommodity(code) {
     <div style="margin-left:auto;display:flex;gap:10px;flex-wrap:wrap">
       <button class="btn ghost sm" data-watch="commodity:${esc(c.code)}" data-label="1">${isWatched("commodity", c.code) ? "★ " + t("dt.watched") : "☆ " + t("dt.watch")}</button>
       <a class="btn ghost sm" href="#/deals?instrument=${encodeURIComponent(c.code)}">${t("nav.deals")}</a>
-      <button class="btn sm" data-q="${esc(LANG === "ru" ? `Как менялась средняя цена товара «${c.name}» по месяцам в 2026 году?` : `How did the average price of "${c.name}" change by month in 2026?`)}">${t("dt.ask")}</button>
+      <button class="btn sm" data-q="${esc(LANG === "ru" ? `Как менялась средняя цена товара «${c.name}» по месяцам в 2026 году?` : `2026-yilda «${c.name}» o‘rtacha narxi oylar bo‘yicha qanday o‘zgargan?`)}">${t("dt.ask")}</button>
     </div></div>
     <div class="kv" style="margin-top:20px">
       <div><small>${t("th.deals")}</small><b class="num">${fmt(c.deals)}</b></div>
@@ -690,13 +690,13 @@ async function pageParticipants(params) {
   const link = (pg) => { const x = new URLSearchParams(); if (q) x.set("q", q); if (role) x.set("role", role); if (pg > 1) x.set("page", pg); const s = x.toString(); return "#/participants" + (s ? "?" + s : ""); };
   const ru = LANG === "ru";
   const form = `<form class="filters" id="ptForm" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-    <input name="q" value="${esc(q)}" placeholder="${ru ? "Название или ИНН" : "Name or INN"}" style="flex:1;min-width:180px">
-    <select name="role"><option value="">${ru ? "Все роли" : "All roles"}</option>
+    <input name="q" value="${esc(q)}" placeholder="${ru ? "Название или ИНН" : "Nomi yoki STIR"}" style="flex:1;min-width:180px">
+    <select name="role"><option value="">${ru ? "Все роли" : "Barcha rollar"}</option>
       <option value="seller"${role === "seller" ? " selected" : ""}>${t("role.seller")}</option>
       <option value="buyer"${role === "buyer" ? " selected" : ""}>${t("role.buyer")}</option></select>
-    <button class="btn sm">${ru ? "Найти" : "Search"}</button></form>`;
+    <button class="btn sm">${ru ? "Найти" : "Qidirish"}</button></form>`;
   const pager = `<div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:8px">
-    <small class="muted">${ru ? "Найдено" : "Found"}: ${fmt(pt.total)} · ${ru ? "стр." : "page"} ${fmt(pt.page)} / ${fmt(pages)}</small>
+    <small class="muted">${ru ? "Найдено" : "Topildi"}: ${fmt(pt.total)} · ${ru ? "стр." : "sahifa"} ${fmt(pt.page)} / ${fmt(pages)}</small>
     <span>${pt.page > 1 ? `<a class="btn ghost sm" href="${link(pt.page - 1)}">←</a>` : ""} ${pt.page < pages ? `<a class="btn ghost sm" href="${link(pt.page + 1)}">→</a>` : ""}</span></div>`;
   return `<div class="page-h"><h1>${t("part.title")}</h1><p>${t("part.text")}</p></div>${await demoNote(true)}
   <div class="grid g2">
@@ -845,7 +845,7 @@ async function pageAbout() {
   const ru = LANG === "ru";
   const steps = ru
     ? [["1. Загрузка", "CSV/XLSX/JSON/HTML → единая схема, колонки на uz/ru/en сопоставляются автоматически"], ["2. SQLite", "Сделки + источник (файл, строка) для каждой записи; база только для чтения"], ["3. Claude + tools", "describe_data, distinct_values, run_sql (только один SELECT)"], ["4. Проверка", "Каждое число в ответе сверяется с результатами SQL; при расхождении — переписывание"], ["5. Ответ", "Текст + SQL + строки-источники + отметка проверки"]]
-    : [["1. Ingest", "CSV/XLSX/JSON/HTML → one schema; uz/ru/en column names mapped automatically"], ["2. SQLite", "Deals + source (file, row) for every record; read-only for the agent"], ["3. Claude + tools", "describe_data, distinct_values, run_sql (single SELECT only)"], ["4. Verification", "Every number in the answer is matched against SQL results; mismatch → rewrite"], ["5. Answer", "Text + SQL + source rows + verification badge"]];
+    : [["1. Yuklash", "CSV/XLSX/JSON/HTML → yagona sxema; uz/ru/en ustun nomlari avtomatik moslashtiriladi"], ["2. SQLite", "Bitimlar + har bir yozuv manbasi (fayl, qator); agent uchun faqat o‘qish"], ["3. Claude + vositalar", "describe_data, distinct_values, run_sql (faqat bitta SELECT)"], ["4. Tekshiruv", "Javobdagi har bir son SQL natijalari bilan solishtiriladi; mos kelmasa — qayta yoziladi"], ["5. Javob", "Matn + SQL + manba qatorlari + tekshiruv belgisi"]];
   return `<div class="page-h"><h1>${t("about.title")}</h1></div>
   <div class="card pad prose">
     <div class="flow">${steps.map(([h, p]) => `<div><b>${h}</b>${p}</div>`).join("")}</div>
@@ -853,7 +853,7 @@ async function pageAbout() {
     <h3>Технологии</h3>
     <ul><li><b>Backend:</b> Python 3, FastAPI, SQLite, pandas (загрузка и нормализация файлов).</li>
       <li><b>LLM:</b> Claude (Anthropic API) с вызовом инструментов — модель не видит «сырые» данные целиком, а запрашивает их через SQL.</li>
-      <li><b>Frontend:</b> HTML/CSS/JS без фреймворков, графики на SVG, языки RU/EN; агент понимает вопросы на RU/UZ/EN.</li>
+      <li><b>Frontend:</b> HTML/CSS/JS без фреймворков, графики на SVG, языки RU/UZ; агент понимает вопросы на RU/UZ.</li>
       <li><b>Кабинет:</b> регистрация/вход (PBKDF2-хеши паролей, токены сессий), избранное, история вопросов, загрузка файлов.</li></ul>
     <h3>Подготовка данных (реестр uzex_spot_data)</h3>
     <ul><li>Каждая сделка связана с карточкой контракта: валюта, код ТН ВЭД, категория. Названия участников — по ИНН, брокеры — по коду.</li>
@@ -874,63 +874,63 @@ async function pageAbout() {
     <ul><li>Автотесты (<code>pytest</code>): сопоставление колонок, разбор чисел, защита SQL, ловля выдуманного числа, цикл агента с фиктивной моделью.</li>
       <li>Контрольные вопросы с ответами, посчитанными вручную SQL-запросами, включая вопросы без ответа в данных (напр. «золото в 2023»).</li></ul>`
     : `
-    <h3>Technology</h3>
-    <ul><li><b>Backend:</b> Python 3, FastAPI, SQLite, pandas (file loading and normalisation).</li>
-      <li><b>LLM:</b> Claude (Anthropic API) with tool use — the model never sees the raw data wholesale, it queries it with SQL.</li>
-      <li><b>Frontend:</b> framework-free HTML/CSS/JS, SVG charts, RU/EN interface; the agent understands RU/UZ/EN questions.</li>
-      <li><b>Account:</b> sign up / sign in (PBKDF2 password hashes, session tokens), watchlist, question history, file upload.</li></ul>
-    <h3>Data preparation (uzex_spot_data registry)</h3>
-    <ul><li>Every deal is linked to its contract card: currency, HS code, category. Party names come from the TIN, brokers from their code.</li>
-      <li>Sellers spell the same product differently ("Мука", "МУКА ПШЕНИЧНАЯ…"), so a commodity = HS code with one name (42 commodities); the original name is kept. Fuel oil vs diesel and petrol in litres vs tonnes are split.</li>
-      <li>Volume = lots × lot size, price = amount ÷ volume; diesel sold in kg is converted to tonnes.</li>
-      <li>USD deals are converted to UZS at the rate on the deal date (<code>amount_uzs</code>).</li>
-      <li>Cancelled (unpaid) deals are excluded from turnover, volume and prices; deal counts show them separately.</li></ul>
-    <h3>Two agent modes</h3>
-    <ul><li><b>Claude + SQL</b> — when an API key is set: any free-form question.</li>
-      <li><b>Offline engine</b> — no key or API error: detects the commodity (RU/UZ/EN, word endings), period, conditions (export, spot/forward/futures, auction type) and metric (count, amount, top-N, average price and its trend, cancelled share, statuses, payment and delivery times, USD turnover) → ready SQL. If the question isn't understood, it doesn't guess.</li></ul>
-    <h3>How we prevent made-up answers</h3>
-    <ol><li>The system prompt forbids using model knowledge: tool results only.</li>
-      <li>All calculations run in SQL; the DB is opened <code>mode=ro</code> and only a single <code>SELECT/WITH</code> is allowed.</li>
-      <li><code>verify.py</code> extracts every number in the answer (incl. "12.5 bn", "1 234 567,89") and looks for it in the query results. Unconfirmed numbers → the model rewrites; if still unconfirmed → the answer carries a warning.</li>
-      <li>If the period/commodity/company is not in the data, the agent says "the data has no answer" and explains what is missing.</li>
-      <li>The UI shows what each answer is based on: SQL queries and result rows.</li></ol>
-    <h3>How answers were checked</h3>
-    <ul><li>Automated tests (<code>pytest</code>): column mapping, number parsing, SQL guard, catching an invented number, agent loop with a fake model.</li>
-      <li>Control questions with answers computed by hand in SQL, including questions with no answer in the data (e.g. "gold in 2023").</li></ul>`}
-    <h3>${ru ? "Загруженные данные" : "Loaded data"}</h3>
+    <h3>Texnologiyalar</h3>
+    <ul><li><b>Backend:</b> Python 3, FastAPI, SQLite, pandas (fayllarni yuklash va normallashtirish).</li>
+      <li><b>LLM:</b> Claude (Anthropic API) vositalar bilan — model ma'lumotlarni to‘liq ko‘rmaydi, ularni SQL orqali so‘raydi.</li>
+      <li><b>Frontend:</b> freymvorksiz HTML/CSS/JS, SVG grafiklar, RU/UZ interfeys; agent RU/UZ savollarni tushunadi.</li>
+      <li><b>Kabinet:</b> ro‘yxatdan o‘tish / kirish (PBKDF2 parol xeshlari, sessiya tokenlari), kuzatuv ro‘yxati, savollar tarixi, fayl yuklash.</li></ul>
+    <h3>Ma'lumotlarni tayyorlash (uzex_spot_data reyestri)</h3>
+    <ul><li>Har bir bitim shartnoma kartochkasi bilan bog‘langan: valyuta, TN VED kodi, kategoriya. Tomonlar nomi — STIR bo‘yicha, brokerlar — kod bo‘yicha.</li>
+      <li>Sotuvchilar bir tovarni turlicha yozadi («Мука», «МУКА ПШЕНИЧНАЯ…»), shuning uchun tovar = yagona nomli TN VED kodi (42 ta tovar); asl nomi saqlangan. Mazut va dizel, litr va tonnadagi benzin ajratilgan.</li>
+      <li>Hajm = lotlar × lot hajmi, narx = summa ÷ hajm; kg da sotilgan dizel tonnaga o‘tkazilgan.</li>
+      <li>USD bitimlar bitim sanasidagi kurs bo‘yicha so‘mga o‘tkazilgan (<code>amount_uzs</code>).</li>
+      <li>Bekor qilingan (to‘lanmagan) bitimlar aylanma, hajm va narxlarga kirmaydi; bitimlar sonida alohida ko‘rsatiladi.</li></ul>
+    <h3>Agentning ikki rejimi</h3>
+    <ul><li><b>Claude + SQL</b> — API kalit o‘rnatilganda: istalgan erkin savol.</li>
+      <li><b>Oflayn dvigatel</b> — kalit bo‘lmasa yoki API xatosida: tovarni (RU/UZ, so‘z qo‘shimchalari), davrni, shartlarni (eksport, spot/forvard/fyuchers, auksion turi) va ko‘rsatkichni (soni, summa, top-N, o‘rtacha narx va dinamikasi, bekor qilinganlar ulushi, holatlar, to‘lov va yetkazib berish muddatlari, USD aylanma) aniqlaydi → tayyor SQL. Savol tushunilmasa — taxmin qilmaydi.</li></ul>
+    <h3>O‘ylab topilgan javoblarning oldi qanday olinadi</h3>
+    <ol><li>Tizim ko‘rsatmasi model bilimidan foydalanishni taqiqlaydi: faqat vosita natijalari.</li>
+      <li>Barcha hisoblar SQL da; baza <code>mode=ro</code> rejimida ochiladi, faqat bitta <code>SELECT/WITH</code> ruxsat etiladi.</li>
+      <li><code>verify.py</code> javobdagi barcha sonlarni ajratib oladi («12,5 mlrd», «1 234 567,89» kabi) va so‘rov natijalaridan qidiradi. Tasdiqlanmagan sonlar → model qayta yozadi; yana tasdiqlanmasa → javobga ogohlantirish qo‘shiladi.</li>
+      <li>Ma'lumotlarda davr/tovar/kompaniya bo‘lmasa, agent «ma'lumotlarda javob yo‘q» deydi va nima yetishmasligini tushuntiradi.</li>
+      <li>Interfeysda javob nimaga asoslangani ko‘rinadi: SQL so‘rovlar va natija qatorlari.</li></ol>
+    <h3>Javoblar qanday tekshirilgan</h3>
+    <ul><li>Avtotestlar (<code>pytest</code>): ustunlarni moslashtirish, sonlarni tahlil qilish, SQL himoyasi, o‘ylab topilgan sonni ushlash, soxta model bilan agent sikli.</li>
+      <li>Javoblari SQL bilan qo‘lda hisoblangan nazorat savollari, jumladan ma'lumotlarda javobi yo‘q savollar (masalan, «2023-yilda oltin»).</li></ul>`}
+    <h3>${ru ? "Загруженные данные" : "Yuklangan ma'lumotlar"}</h3>
     <ul><li><code>deals</code> — ${fmt(d.total_rows)} (${dmy(d.date_range[0])} — ${dmy(d.date_range[1])})</li>${tables}</ul>
   </div>`;
 }
 
 // ---------------- mega menu ----------------
-const L = (ru, en, href) => ({ ru, en, href });
+const L = (ru, uz, href) => ({ ru, uz, href });
 const MENU = [
-  { ru: "О нас", en: "About", cols: [
-    { ru: "О бирже", en: "About the exchange", items: [L("Общая информация", "General information", "#/info/general"), L("Руководство", "Management", "#/info/management"), L("История", "History", "#/info/history"), L("Карта сайта", "Site map", "#/info/sitemap"), L("FAQ", "FAQ", "#/info/faq"), L("Контакты", "Contacts", "#/info/contacts")] },
-    { ru: "О решении", en: "About the solution", items: [L("Описание решения", "Solution description", "#/about"), L("AI-агент", "AI agent", "#/agent"), L("Как проверяются ответы", "How answers are verified", "#/about")] },
+  { ru: "О нас", uz: "Biz haqimizda", cols: [
+    { ru: "О бирже", uz: "Birja haqida", items: [L("Общая информация", "Umumiy ma'lumot", "#/info/general"), L("Руководство", "Rahbariyat", "#/info/management"), L("История", "Tarix", "#/info/history"), L("Карта сайта", "Sayt xaritasi", "#/info/sitemap"), L("FAQ", "FAQ", "#/info/faq"), L("Контакты", "Kontaktlar", "#/info/contacts")] },
+    { ru: "О решении", uz: "Yechim haqida", items: [L("Описание решения", "Yechim tavsifi", "#/about"), L("AI-агент", "AI-agent", "#/agent"), L("Как проверяются ответы", "Javoblar qanday tekshiriladi", "#/about")] },
   ] },
-  { ru: "Рынки", en: "Markets", cols: [
-    { ru: "Рынки", en: "Markets", items: [L("Торговые площадки", "Trading boards", "#/info/boards"), L("График торгов", "Trading schedule", "#/info/schedule"), L("Виды заявок", "Order types", "#/info/orders"), L("Тарифы", "Tariffs", "#/info/tariffs")] },
-    { ru: "Нормативная база", en: "Regulations", items: [L("Правила", "Rules", "#/info/rules"), L("Положения", "Provisions", "#/info/provisions"), L("Порядки", "Procedures", "#/info/procedures")] },
-    { ru: "Рыночные данные", en: "Market data", items: [L("Итоги торгов", "Trading results", "#/trades"), L("Список сделок по акциям", "Share trades list", "#/trades"), L("Ликвидность акций", "Share liquidity", "#/stocks?liq=high"), L("Курс доллара", "USD rate", "#/usd")] },
-    { ru: "Товарная биржа", en: "Commodity exchange", items: [L("Котировки товаров", "Commodity quotes", "#/commodities"), L("Реестр сделок", "Deal registry", "#/deals"), L("Участники торгов", "Trading participants", "#/participants")] },
+  { ru: "Рынки", uz: "Bozorlar", cols: [
+    { ru: "Рынки", uz: "Bozorlar", items: [L("Торговые площадки", "Savdo maydonchalari", "#/info/boards"), L("График торгов", "Savdo jadvali", "#/info/schedule"), L("Виды заявок", "Buyurtma turlari", "#/info/orders"), L("Тарифы", "Tariflar", "#/info/tariffs")] },
+    { ru: "Нормативная база", uz: "Me'yoriy baza", items: [L("Правила", "Qoidalar", "#/info/rules"), L("Положения", "Nizomlar", "#/info/provisions"), L("Порядки", "Tartiblar", "#/info/procedures")] },
+    { ru: "Рыночные данные", uz: "Bozor ma'lumotlari", items: [L("Итоги торгов", "Savdo natijalari", "#/trades"), L("Список сделок по акциям", "Aksiyalar bo‘yicha bitimlar ro‘yxati", "#/trades"), L("Ликвидность акций", "Aksiyalar likvidligi", "#/stocks?liq=high"), L("Курс доллара", "Dollar kursi", "#/usd")] },
+    { ru: "Товарная биржа", uz: "Tovar birjasi", items: [L("Котировки товаров", "Tovar kotirovkalari", "#/commodities"), L("Реестр сделок", "Bitimlar reyestri", "#/deals"), L("Участники торгов", "Savdo ishtirokchilari", "#/participants")] },
   ] },
-  { ru: "Инструменты", en: "Instruments", cols: [
-    { ru: "Инструменты", en: "Instruments", items: [L("Акции", "Stocks", "#/stocks"), L("Котировальный лист", "Quotation list", "#/listing"), L("Биржевые товары", "Commodities", "#/commodities")] },
-    { ru: "Показатели", en: "Indicators", items: [L("Оборот по месяцам", "Monthly turnover", "#/"), L("Уровни ликвидности", "Liquidity levels", "#/stocks"), L("Курс USD/UZS", "USD/UZS rate", "#/usd")] },
+  { ru: "Инструменты", uz: "Instrumentlar", cols: [
+    { ru: "Инструменты", uz: "Instrumentlar", items: [L("Акции", "Aksiyalar", "#/stocks"), L("Котировальный лист", "Kotirovka varag‘i", "#/listing"), L("Биржевые товары", "Birja tovarlari", "#/commodities")] },
+    { ru: "Показатели", uz: "Ko‘rsatkichlar", items: [L("Оборот по месяцам", "Oylik aylanma", "#/"), L("Уровни ликвидности", "Likvidlik darajalari", "#/stocks"), L("Курс USD/UZS", "USD/UZS kursi", "#/usd")] },
   ] },
-  { ru: "Участникам", en: "Participants", cols: [
-    { ru: "Инвесторам", en: "Investors", items: [L("Как начать инвестировать", "How to start investing", "#/info/invest"), L("Члены биржи (Брокеры)", "Exchange members (brokers)", "#/participants"), L("Котировальный лист", "Quotation list", "#/listing"), L("Личный кабинет", "Personal account", "#/cabinet")] },
-    { ru: "Эмитентам", en: "Issuers", items: [L("Листинг", "Listing", "#/info/listing"), L("Требования к эмитентам", "Issuer requirements", "#/info/issuers"), L("Раскрытие информации", "Disclosure", "#/info/disclosure")] },
-    { ru: "Членам биржи", en: "Exchange members", items: [L("Документы для участников", "Documents for members", "#/info/docs"), L("Участники торгов", "Trading participants", "#/participants")] },
+  { ru: "Участникам", uz: "Ishtirokchilarga", cols: [
+    { ru: "Инвесторам", uz: "Investorlarga", items: [L("Как начать инвестировать", "Investitsiyani qanday boshlash", "#/info/invest"), L("Члены биржи (Брокеры)", "Birja a'zolari (brokerlar)", "#/participants"), L("Котировальный лист", "Kotirovka varag‘i", "#/listing"), L("Личный кабинет", "Shaxsiy kabinet", "#/cabinet")] },
+    { ru: "Эмитентам", uz: "Emitentlarga", items: [L("Листинг", "Listing", "#/info/listing"), L("Требования к эмитентам", "Emitentlarga talablar", "#/info/issuers"), L("Раскрытие информации", "Axborotni oshkor qilish", "#/info/disclosure")] },
+    { ru: "Членам биржи", uz: "Birja a'zolariga", items: [L("Документы для участников", "Ishtirokchilar uchun hujjatlar", "#/info/docs"), L("Участники торгов", "Savdo ishtirokchilari", "#/participants")] },
   ] },
-  { ru: "Пресс-центр", en: "Press centre", cols: [
-    { ru: "Медиацентр", en: "Media centre", items: [L("Новости", "News", "#/info/news"), L("Объявления", "Announcements", "#/info/announcements")] },
-    { ru: "Аналитика", en: "Analytics", items: [L("Торговая статистика", "Trading statistics", "#/"), L("AI-аналитика по данным", "AI data analytics", "#/agent")] },
+  { ru: "Пресс-центр", uz: "Matbuot markazi", cols: [
+    { ru: "Медиацентр", uz: "Mediamarkaz", items: [L("Новости", "Yangiliklar", "#/info/news"), L("Объявления", "E'lonlar", "#/info/announcements")] },
+    { ru: "Аналитика", uz: "Tahlil", items: [L("Торговая статистика", "Savdo statistikasi", "#/"), L("AI-аналитика по данным", "Ma'lumotlar bo‘yicha AI-tahlil", "#/agent")] },
   ] },
-  { ru: "Корпоративное управление", en: "Corporate governance", cols: [
-    { ru: "Раскрытие информации", en: "Disclosure", items: [L("Существенные факты", "Material facts", "#/info/facts"), L("Дивиденды", "Dividends", "#/info/dividends")] },
-    { ru: "Документы", en: "Documents", items: [L("Устав общества", "Charter", "#/info/charter"), L("Внутренние документы", "Internal documents", "#/info/internal")] },
+  { ru: "Корпоративное управление", uz: "Korporativ boshqaruv", cols: [
+    { ru: "Раскрытие информации", uz: "Axborotni oshkor qilish", items: [L("Существенные факты", "Muhim faktlar", "#/info/facts"), L("Дивиденды", "Dividendlar", "#/info/dividends")] },
+    { ru: "Документы", uz: "Hujjatlar", items: [L("Устав общества", "Jamiyat ustavi", "#/info/charter"), L("Внутренние документы", "Ichki hujjatlar", "#/info/internal")] },
   ] },
 ];
 const tl = o => o[LANG] || o.ru;
@@ -1044,7 +1044,6 @@ async function pageInfo(slug) {
 }
 
 // ---------------- router ----------------
-const USD_TODAY = { rate: 12020, date: "2026-11-05" }; // текущий курс для главной; агент считает по usd_rates.csv
 const ROUTES = [
   [/^\/$/, pageHome, afterHome, "/"],
   [/^\/stocks$/, pageStocks, afterStocks, "/stocks"],
