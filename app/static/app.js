@@ -26,7 +26,7 @@ const I18N = {
     "hero.title": "Биржевые данные и AI-агент, который не выдумывает",
     "hero.text": "Спросите на русском или узбекском — агент построит SQL-запрос к реестру сделок, покажет источник и проверит каждое число в ответе.",
     "hero.ph": "Например: какой товар принёс наибольший оборот в октябре 2026?", "hero.ask": "Спросить",
-    "st.day": "Оборот за день", "st.month": "Оборот за месяц", "st.deals": "Сделок всего", "st.usd": "Курс USD",
+    "st.day": "Оборот за день", "st.month": "Оборот за месяц", "st.deals": "Сделок всего", "st.usd": "Курс USD", "st.usdData": "в данных конкурса",
     "st.daydeals": "{n} сделок · {d}", "st.monthdeals": "{n} сделок",
     "sec.trades": "Итоги торгов", "sec.listings": "Информация о ценных бумагах, включенных в биржевой котировальный лист",
     "sec.liq": "Уровни ликвидности акций, включенных в биржевой котировальный лист", "sec.monthly": "Оборот товарной биржи по месяцам",
@@ -105,7 +105,7 @@ const I18N = {
     "hero.title": "Exchange data and an AI agent that never makes things up",
     "hero.text": "Ask in Russian, Uzbek or English — the agent writes SQL against the deal registry, shows its sources and checks every number in the answer.",
     "hero.ph": "e.g. Which commodity had the highest turnover in October 2026?", "hero.ask": "Ask",
-    "st.day": "Daily turnover", "st.month": "Monthly turnover", "st.deals": "Total deals", "st.usd": "USD rate",
+    "st.day": "Daily turnover", "st.month": "Monthly turnover", "st.deals": "Total deals", "st.usd": "USD rate", "st.usdData": "in contest data",
     "st.daydeals": "{n} deals · {d}", "st.monthdeals": "{n} deals",
     "sec.trades": "Trading results", "sec.listings": "Securities included in the exchange quotation list",
     "sec.liq": "Liquidity levels of shares in the quotation list", "sec.monthly": "Commodity exchange turnover by month",
@@ -448,7 +448,7 @@ async function pageHome() {
   const [ov, tr, liq, lst, note] = await Promise.all([
     cached("ov", () => api("/api/market/overview")), api("/api/stocks/trades?limit=10"),
     cached("liq", () => api("/api/stocks/liquidity")), cached("lst", () => api("/api/stocks/listings")), demoNote()]);
-  const usd = ov.usd ? `<div class="hs"><small>${t("st.usd")}</small><b class="num">${fmt(ov.usd.rate, 2)}</b><span class="${cls(ov.usd.rate - ov.usd.prev)}">${sign(ov.usd.rate - ov.usd.prev)}${fmt(ov.usd.rate - ov.usd.prev, 2)} · ${dmy(ov.usd.date)}</span></div>` : "";
+  const usd = `<div class="hs"><small>${t("st.usd")}</small><b class="num">${fmt(USD_TODAY.rate, 2)}</b><span>${dmy(USD_TODAY.date)}${ov.usd ? ` · ${t("st.usdData")}: ${fmt(ov.usd.rate, 2)} (${dmy(ov.usd.date)})` : ""}</span></div>`;
   const months = ov.monthly.slice(-24);
   return note + `
   <div class="hero">
@@ -1044,6 +1044,7 @@ async function pageInfo(slug) {
 }
 
 // ---------------- router ----------------
+const USD_TODAY = { rate: 12020, date: "2026-11-05" }; // текущий курс для главной; агент считает по usd_rates.csv
 const ROUTES = [
   [/^\/$/, pageHome, afterHome, "/"],
   [/^\/stocks$/, pageStocks, afterStocks, "/stocks"],
