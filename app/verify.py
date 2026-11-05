@@ -100,7 +100,9 @@ def check_answer(answer: str, tool_results: list, question: str = "", small_int_
             continue
         if v in q_nums:
             continue
-        if any(_close(v, e) for e in ev if math.isfinite(e)):
+        # "1,215 трлн" — ruscha o'nlik vergul (1.215) yoki minglik ajratgich (1215): ikkalasi ham tekshiriladi
+        cands = [v, v / 1000] if re.fullmatch(r"-?\d{1,3},\d{3}", tok) else [v]
+        if any(_close(c, e) for c in cands for e in ev if math.isfinite(e)):
             continue
         unsupported.append(tok)
     return {"ok": not unsupported, "unsupported": unsupported}
