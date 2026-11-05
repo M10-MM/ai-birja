@@ -24,15 +24,15 @@ Talablar: Python 3.11+ (Windows: `py`), ixtiyoriy Node.js (faqat `npm` qisqa buy
 ```bash
 git clone <ushbu repo>
 cd <repo>
-npm run setup      # = py -m pip install -r birja-agent/birja-agent/requirements.txt
+npm run setup      # = py -m pip install -r requirements.txt
 npm start          # = py cli.py serve  -> http://127.0.0.1:8765
 npm test           # 24 ta avtotest
 ```
 
-npm bo'lmasa: `cd birja-agent/birja-agent && py -m pip install -r requirements.txt && py cli.py serve`
+npm bo'lmasa: `py -m pip install -r requirements.txt && py cli.py serve`
 (macOS/Linux: `python3`). Birinchi ishga tushirishda baza avtomatik yaratiladi. Port band bo'lsa, server o'zi bo'sh portni tanlaydi.
 
-Ixtiyoriy: `birja-agent/birja-agent/.env` faylida `ANTHROPIC_API_KEY=...` bo'lsa, agent Claude bilan ishlaydi;
+Ixtiyoriy: `.env` faylida (namuna: `.env.example`) `ANTHROPIC_API_KEY=...` bo'lsa, agent Claude bilan ishlaydi;
 bo'lmasa — o'rnatilgan oflayn dvigatel (qoidalar → SQL) ishlaydi.
 
 ## Yechim qisqacha
@@ -46,7 +46,22 @@ bo'lmasa — o'rnatilgan oflayn dvigatel (qoidalar → SQL) ishlaydi.
 - **Sayt:** tovar tikeri, aksiyalar, tovar kotirovkalari, bitimlar reyestri (filtr, CSV), likvidlik, ishtirokchilar,
   dollar kursi, shaxsiy kabinet (ro'yxatdan o'tish, kuzatuv ro'yxati, savollar tarixi, fayl yuklash).
 
-Batafsil: [birja-agent/birja-agent/README.md](birja-agent/birja-agent/README.md)
+Batafsil texnik hujjat: [docs/TECHNICAL.md](docs/TECHNICAL.md)
+
+## Kod tuzilmasi
+
+| papka / fayl | nima |
+|---|---|
+| [app/agent.py](app/agent.py) | Claude agenti (tool use: SQL) |
+| [app/offline.py](app/offline.py) | oflayn dvigatel: savol → SQL → javob (LLM kalitisiz) |
+| [app/verify.py](app/verify.py) | javobdagi har bir sonni SQL natijalari bilan tekshirish |
+| [app/api.py](app/api.py) | FastAPI: sayt API, `/api/ask`, kabinet |
+| [app/market.py](app/market.py), [app/db.py](app/db.py), [app/ingest.py](app/ingest.py) | ma'lumotlar: yuklash, normallashtirish, so'rovlar |
+| [app/auth.py](app/auth.py) | shaxsiy kabinet (ro'yxatdan o'tish, kuzatuv, tarix) |
+| [app/static/](app/static/) | sayt (HTML/CSS/JS, RU/EN) |
+| [data/real/](data/real/) | haqiqiy kotirovkalar (UZEX, UZSE) |
+| [tests/](tests/) | avtotestlar (`npm test`) |
+| [cli.py](cli.py) | buyruqlar: `serve`, `load`, `demo`, `ask`, `sql` |
 
 ## Ma'lumotlar
 

@@ -3,7 +3,7 @@ services:
     name: ai-birja
     runtime: docker
     plan: free
-    dockerContext: ./birja-agent/birja-agent
-    dockerfilePath: ./birja-agent/birja-agent/Dockerfile
+    dockerContext: .
+    dockerfilePath: ./Dockerfile
     healthCheckPath: /api/data
     autoDeploy: true
