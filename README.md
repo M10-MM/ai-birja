@@ -11,7 +11,13 @@ AI-agent va birja sayti prototipi (RU / EN interfeys, agent RU / UZ / EN savolla
 | **Jamoa a'zolari** | 1. _Ism Familiya_ · 2. _Ism Familiya_ · 3. _Ism Familiya_ |
 | **Yechim tavsifi** | quyida va saytdagi «О решении» sahifasida |
 
-## Ishga tushirish
+## Onlayn ishga tushirish (1 klik)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/M10-MM/ai-birja)
+
+Render bepul tarifida sayt `https://ai-birja-xxxx.onrender.com` ko'rinishidagi havolada ishlaydi (Docker, `render.yaml`).
+
+## Ishga tushirish (lokal)
 
 Talablar: Python 3.11+ (Windows: `py`), ixtiyoriy Node.js (faqat `npm` qisqa buyruqlari uchun).
 
