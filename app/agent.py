@@ -149,7 +149,10 @@ class BirjaAgent:
                     "TEKSHIRUV: javobingdagi quyidagi sonlar vosita natijalarida topilmadi: "
                     + ", ".join(check["unsupported"])
                     + ". Ularni SQL bilan hisoblab tasdiqla yoki javobdan olib tashla. "
-                    "Faqat ma'lumotlardagi sonlarni qoldirib, javobni qayta yoz."
+                    "Faqat ma'lumotlardagi sonlarni qoldirib, javobni qayta yoz. "
+                    "MUHIM: faqat foydalanuvchiga mo'ljallangan yakuniy javobni savol tilida yoz — bu tekshiruv, "
+                    "tuzatish yoki sonlarni qanday yozganing haqida hech narsa demagin. Sanalarni YYYY-MM-DD "
+                    "ko'rinishida yoki oy nomi bilan yoz (masalan «март 2023»), «01.03» kabi qisqa shaklda emas."
                 ),
             })
             answer = self._loop(messages, queries, evidence)

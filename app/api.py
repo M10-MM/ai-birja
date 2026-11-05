@@ -197,8 +197,8 @@ def ask(body: Ask, authorization: str | None = Header(None)):
     if r is None:
         r = OfflineAgent(con).ask(body.question)
     evidence = [
-        {"columns": t["columns"], "rows": t["rows"][:15], "row_count": t["row_count"], "truncated": t["truncated"]}
-        for t in r.tool_results if isinstance(t, dict) and "columns" in t
+        {"columns": t["columns"], "rows": t["rows"][:15], "row_count": t.get("row_count", len(t["rows"])), "truncated": t.get("truncated", False)}
+        for t in r.tool_results if isinstance(t, dict) and "columns" in t and "rows" in t
     ]
     uid = _uid(authorization, required=False)
     if uid:
