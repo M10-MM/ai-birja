@@ -381,6 +381,21 @@ class OfflineAgent:
         if not cov[2]:  # tovar bitimlari reyestri bo'sh
             return [t["nodata"]]
 
+        # 1b2) dollar kursi (usd_rate): o'rtacha / min / max davr bo'yicha
+        rate_q = re.search(r"kurs|exchange rate|usd rate|dollar rate|rate of", nq) and re.search(r"dollar|usd|\$", nq)
+        if rate_q and not re.search(r"oborot|aylanma|turnover|summa", nq) and self.has("usd_rate"):
+            d1, d2, label = self.period(nq, lang)
+            w, p = ("WHERE date BETWEEN ? AND ?", (d1, d2)) if d1 else ("", ())
+            r = self.sql(f"SELECT ROUND(AVG(usd_uzs), 2) AS avg_rate, MIN(usd_uzs) AS min_rate, MAX(usd_uzs) AS max_rate, COUNT(*) AS days FROM usd_rate {w}", p)[0]
+            if not r[3]:
+                return [{"en": "No USD rate data for this period (data: 2022-01-01 — 2026-10-31).",
+                         "uz": "Bu davr uchun dollar kursi ma'lumoti yo'q (ma'lumot: 2022-01-01 — 2026-10-31).",
+                         "ru": "За этот период нет данных о курсе доллара (данные: 2022-01-01 — 2026-10-31)."}[lang]]
+            lbl = (label or {"en": "for the whole period", "uz": "butun davr uchun", "ru": "за весь период"}[lang]).strip()
+            return [{"en": f"Average USD rate {lbl}: {fmt(r[0])} UZS (min {fmt(r[1])}, max {fmt(r[2])}, {fmt(r[3], 0)} days). Source: usd_rates.csv.",
+                     "uz": f"{lbl.replace('-yilda', '-yil')} o'rtacha dollar kursi: {fmt(r[0])} so'm (min {fmt(r[1])}, max {fmt(r[2])}, {fmt(r[3], 0)} kun). Manba: usd_rates.csv.",
+                     "ru": f"Средний курс доллара {lbl}: {fmt(r[0])} сум (мин. {fmt(r[1])}, макс. {fmt(r[2])}, {fmt(r[3], 0)} дн.). Источник: usd_rates.csv."}[lang]]
+
         # 1c) ishtirokchilar / brokerlar soni (tovar va davr ko'rsatilmagan)
         count_q = re.search(r"skolko|kolichest|nechta|qancha|how many|number of|count", nq)
         who_q = re.search(r"prodav|pokupat|uchastnik|sotuvchi|xaridor|ishtirokchi|seller|buyer|participant|broker", nq)
