@@ -1,0 +1,72 @@
+quote_date,exchange,ticker,issuer,close_price,last_price,change_abs,currency,source
+2026-11-05,UZSE,URTS,АО «O'zRTXB» (Биржа UZEX),14200.00,13900.00,-300.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,AGMKP,АО «Olmaliq KMK» (прив.),35500.00,33500.00,-496.01,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UZMK,АО «O'zmetkombinat»,9080.00,8760.00,-39.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UZMKP,АО «O'zmetkombinat» (прив.),4295.00,4150.00,-50.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,SQBN,АКИБ «O'zsanoatqurilishbank»,63.43,62.97,-0.23,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,SQBNP,АКИБ «O'zsanoatqurilishbank» (прив.),89.99,88.50,0.49,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,HMKB,АКБ «Hamkorbank»,116.80,115.50,0.50,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,HMKBP,АКБ «Hamkorbank» (прив.),139.00,136.00,-5.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,AGBA,АКБ «Agrobank»,579.99,570.00,-9.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,AGBAP,АКБ «Agrobank» (прив.),10000.00,10399.90,-100.10,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,IPKY,АИКИБ «Ipak Yo'li»,316.00,321.99,9.19,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,ALKB,АКБ «Aloqabank»,0.96,1.06,0.03,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,ALKBP,АКБ «Aloqabank» (прив.),4.23,4.25,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,TRSB,ЧАКБ «Trastbank»,9076.00,9000.00,300.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,TRSBP,ЧАКБ «Trastbank» (прив.),130000.00,155500.00,5738.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,MCBA,АКБ «Mikrokreditbank»,1067.00,1017.10,-50.90,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,MCBAP,АКБ «Mikrokreditbank» (прив.),22999.00,23999.99,501.99,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,BRBN,АКБ «Biznesni rivojlantirish banki»,82.00,80.00,-1.74,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,BRBNP,АКБ «Biznesni rivojlantirish banki» (прив.),800.00,818.50,-1.50,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,TNBN,АКБ «Turonbank»,1551.34,1598.00,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,TNBNP,АКБ «Turonbank» (прив.),4200.00,4400.00,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,IPTB,АТИБ «Ipoteka-bank»,6.60,6.55,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,IPTBP,АТИБ «Ipoteka-bank» (прив.),9.30,9.17,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,GRBK,АО «GARANT BANK»,4440.00,4349.00,-25.73,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UNVB,АКБ «Universal bank»,11750.40,11946.99,-30.01,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UZTL,АК «O'zbektelekom»,24500.00,22007.00,-1094.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UZTLP,АК «O'zbektelekom» (прив.),13295.00,12700.00,-100.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UZMT,АО «UzAuto Motors»,52400.00,51100.00,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,KVTS,АО «Kvarts»,3300.00,3329.90,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,KSCM,АО «Quvasoycement»,115006.01,135000.00,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,QZSM,АО «Qizilqumsement»,1379.00,1374.99,1.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,BECM,АО «Bekobodsement»,14000.00,14400.00,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,BECMP,АО «Bekobodsement» (прив.),37158.92,37158.92,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,BIOK,АО «Biokimyo»,14220.00,14159.00,79.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UTYK,АО «O'ztemiryo'lkonteyner»,420000.00,400000.00,-39000.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UTGA,АО «O'ztransgaz»,600000.00,599998.99,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UTGAP,АО «O'ztransgaz» (прив.),23500.00,22950.00,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UZIR,АО «O'zbekko'mir»,11100.00,11390.00,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UZIRP,АО «O'zbekko'mir» (прив.),12100.00,11502.00,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UZNGP,АО «O'zbekneftgaz»,5279.99,5499.99,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,KFSK,АО «Kafolat sug'urta»,86.10,86.00,-1.05,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,KFSKP,АО «Kafolat sug'urta» (прив.),6399.99,6400.00,449.99,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,ALSM,АО «ALSKOM SUG'URTA»,1250.00,1299.00,44.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,ALSMP,АО «ALSKOM SUG'URTA» (прив.),24399.00,24998.05,-0.75,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,KASU,АО «Kapital sug'urta»,0.01,0.01,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,KASUP,АО «Kapital sug'urta» (прив.),0.14,0.14,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,DORI,АК «DORI-DARMON»,4475.00,4450.00,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UZAL,АО «O'zagrolizing»,4251.00,4730.00,470.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,TGMQ,АО «TRANSGAZMAX SUSQURILISH»,12000.00,10900.00,399.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,TGPG,АО «Tashgiprogor»,78900.00,78000.00,0.02,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,METQ,АО «METQ»,45000.00,49000.00,6845.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,OHDN,АО «Ohangaron don»,7006.01,7100.00,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UPOS,АО «O'zbekiston pochtasi»,35590.00,34101.00,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UPOSP,АО «O'zbekiston pochtasi» (прив.),56000.00,60000.00,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,ORGS,АО «ORGRES»,5159.76,6191.71,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UZINP,ЭИСК АО «O'zbekinvest»,3512.00,3584.00,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,BTRL,АО «Boshtransloyiha»,13796.99,12440.00,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,PLST,АО «Portlatishsanoat»,80000.00,80050.00,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UQEQ,АО «O'zQEQ»,79000.00,79000.00,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,NGQS,АО «Neft va gaz quduqlarini sinash»,25000.00,30000.00,5000.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,JASM,АО «JSM»,23920.00,28704.00,4784.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,TMYS,АО «TEMIRYO'L-SUG'URTA»,1480.00,1471.50,-8.50,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,YRFS,АО «Yo'lreftrans»,4100.00,4100.00,0.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UVGT,АО «O'ZVAGONTA'MIR»,82000.00,78000.00,-4000.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,BNGP,АО «Buxoroneftgazparmalash»,21511.01,22502.00,990.99,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,BNGPP,АО «Buxoroneftgazparmalash» (прив.),107000.00,110000.00,3000.00,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,QATT,АО «Qashqadaryo texnologik transport»,281.81,281.01,-0.80,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,CBSK,АО «Chilonzor buyum savdo kompleksi»,4.33,4.21,-0.12,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UZGFP,АО «O'zbekgeofizika»,900.00,885.01,-14.99,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UZPN,АО «O'zpartamponaj»,4712.04,5654.44,942.40,UZS,Данные торгов биржи UZEX.pdf
+2026-11-05,UZSE,UZNF,АО «UzMIJ»,6.81,6.79,-0.02,UZS,Данные торгов биржи UZEX.pdf

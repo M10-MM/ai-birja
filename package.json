@@ -1,0 +1,13 @@
+{
+  "name": "ai-birja",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI Birja — birja ma'lumotlari sayti va AI-agent (Python/FastAPI). npm faqat qulay ishga tushirish uchun.",
+  "scripts": {
+    "setup": "cd birja-agent/birja-agent && py -m pip install -r requirements.txt",
+    "start": "cd birja-agent/birja-agent && py cli.py serve",
+    "dev": "cd birja-agent/birja-agent && py cli.py serve --reload",
+    "demo": "cd birja-agent/birja-agent && py cli.py demo",
+    "test": "cd birja-agent/birja-agent && py -m pytest -q"
+  }
+}

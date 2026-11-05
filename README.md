@@ -1,0 +1,50 @@
+# AI Birja — birja ma'lumotlari sayti va AI-agent
+
+Birja bitimlari, aksiyalar va tovar kotirovkalari bo'yicha savollarga **faqat ma'lumotlar asosida** javob beradigan
+AI-agent va birja sayti prototipi (RU / EN interfeys, agent RU / UZ / EN savollarni tushunadi).
+
+## Topshiriq uchun ma'lumot
+
+| | |
+|---|---|
+| **Prototip havolasi** | _yozing: https://..._ (lokal ishga tushirish — pastda) |
+| **Jamoa a'zolari** | 1. _Ism Familiya_ · 2. _Ism Familiya_ · 3. _Ism Familiya_ |
+| **Yechim tavsifi** | quyida va saytdagi «О решении» sahifasida |
+
+## Ishga tushirish
+
+Talablar: Python 3.11+ (Windows: `py`), ixtiyoriy Node.js (faqat `npm` qisqa buyruqlari uchun).
+
+```bash
+git clone <ushbu repo>
+cd <repo>
+npm run setup      # = py -m pip install -r birja-agent/birja-agent/requirements.txt
+npm start          # = py cli.py serve  -> http://127.0.0.1:8765
+npm test           # 24 ta avtotest
+```
+
+npm bo'lmasa: `cd birja-agent/birja-agent && py -m pip install -r requirements.txt && py cli.py serve`
+(macOS/Linux: `python3`). Birinchi ishga tushirishda baza avtomatik yaratiladi. Port band bo'lsa, server o'zi bo'sh portni tanlaydi.
+
+Ixtiyoriy: `birja-agent/birja-agent/.env` faylida `ANTHROPIC_API_KEY=...` bo'lsa, agent Claude bilan ishlaydi;
+bo'lmasa — o'rnatilgan oflayn dvigatel (qoidalar → SQL) ishlaydi.
+
+## Yechim qisqacha
+
+- **Texnologiyalar:** Python, FastAPI, SQLite, pandas; Claude (Anthropic API, tool use) yoki oflayn qoidalar → SQL dvigateli;
+  frontend — framework'siz HTML/CSS/JS, SVG grafiklar.
+- **O'ylab topmaslik kafolati:** har bir hisob — faqat o'qish rejimidagi bitta `SELECT`; javobdagi har bir son
+  `verify.py` bilan SQL natijalariga solishtiriladi (tasdiqlanmasa — qayta yoziladi yoki ogohlantirish);
+  ma'lumot bo'lmasa agent «ma'lumotlarda javob yo'q» deydi; savol tushunilmasa — taxmin qilmaydi.
+- **Shaffoflik:** har bir javob ostida ✓ tekshiruv belgisi, SQL so'rovlar va javob asoslangan qatorlar ko'rsatiladi.
+- **Sayt:** tovar tikeri, aksiyalar, tovar kotirovkalari, bitimlar reyestri (filtr, CSV), likvidlik, ishtirokchilar,
+  dollar kursi, shaxsiy kabinet (ro'yxatdan o'tish, kuzatuv ro'yxati, savollar tarixi, fayl yuklash).
+
+Batafsil: [birja-agent/birja-agent/README.md](birja-agent/birja-agent/README.md)
+
+## Ma'lumotlar
+
+- `data/real/` — 05.11.2026 holatiga UZEX tovar kotirovkalari (27), UZSE aksiyalar (71), aksiya bitimlari, listing, likvidlik
+  («Данные торгов биржи UZEX.pdf» va uzse.uz dan).
+- Tovar bitimlari reyestri, ishtirokchilar, brokerlar, dollar kursi — **DEMO (sun'iy)**, `py cli.py demo` bilan yaratiladi.
+  Tanlovning rasmiy papkasini yuklash: `py cli.py load <fayl> --exchange UZEX`.

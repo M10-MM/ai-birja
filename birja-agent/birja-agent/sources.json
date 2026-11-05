@@ -1,0 +1,19 @@
+{
+  "_izoh": "Birjalar rasmiy saytida e'lon qilingan bitimlar fayllari (CSV/XLSX/JSON) yoki jadvalli sahifalar havolasini qo'shing. 'enabled': true qiling. Keyin: python cli.py sync",
+  "sources": [
+    {
+      "name": "UZEX — kunlik savdo natijalari (namuna yozuv)",
+      "exchange": "UZEX",
+      "url": "",
+      "filename": "uzex_deals.xlsx",
+      "enabled": false
+    },
+    {
+      "name": "UZSE (Toshkent RFB) — bitimlar (namuna yozuv)",
+      "exchange": "UZSE",
+      "url": "",
+      "filename": "uzse_deals.csv",
+      "enabled": false
+    }
+  ]
+}
